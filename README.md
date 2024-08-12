@@ -1,8 +1,8 @@
-# udf-ubuntu-k8s
+# Overview and Goals 
+1.  Build and configure a ubuntu server with k8's running simple nginx web server listening on NodePort. 
+2.  Configure XC virtual CE for Service Discovery
+3.  Publish and secure service to public 
 
-install script for k8's on UDF ubuntu 22.04
-
-VE CE K8s Service Discovery
 Appstack 2024 BP
 XC-CE (RHEL) - 8/32/200
 Ubuntu-k8s (Ubuntu 22.04) 4/16/100
@@ -17,7 +17,7 @@ Run k8s-xc-setup.sh (https://github.com/dober-man/udf-ubuntu-k8s/tree/main)
 Run: cat ./kubeconfig
 Note – you will most likely need to change the server name to an IP if the CE cannot resolve the server name 
 
-This is highly sensitive data and should be secured as such. 
+Note - This is highly sensitive data and should be secured as such. 
 You will soon paste this output into XC Console Service Discovery as a blindfolded secret. 
 
 XC Console
