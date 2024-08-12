@@ -40,7 +40,12 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 EOF
 
-# Step 4: Extract the Service Account Token and CA Certificate with retry mechanism
+# Step 4: Manually create and Bind Secret
+kubectl create secret generic ${SERVICE_ACCOUNT_NAME}-token --from-literal=token=$(openssl rand -hex 32) --from-file=ca.crt=/etc/kubernetes/pki/ca.crt -n $NAMESPACE
+kubectl patch serviceaccount $SERVICE_ACCOUNT_NAME -n $NAMESPACE -p '{"secrets": [{"name": "'${SERVICE_ACCOUNT_NAME}-token'"}]}'
+
+
+# Step 5: Extract the Service Account Token and CA Certificate with retry mechanism
 SECRET_NAME=""
 RETRIES=5
 for i in $(seq 1 $RETRIES); do
