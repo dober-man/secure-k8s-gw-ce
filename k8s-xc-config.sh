@@ -98,4 +98,9 @@ users:
     token: $TOKEN
 EOF
 
+yq eval -P $KUBECONFIG_FILE -o yaml > cleaned_kubeconfig.yaml
+mv cleaned_kubeconfig.yaml $KUBECONFIG_FILE
+
 echo "kubeconfig file generated at: $KUBECONFIG_FILE"
+
+yamllint kubeconfig
