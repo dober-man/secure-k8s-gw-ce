@@ -44,10 +44,10 @@ EOF
 sudo sysctl --system
 
 # Set hostname
-#sudo hostnamectl set-hostname master-node
+sudo hostnamectl set-hostname master-node
 
 # Update /etc/hosts file
-#echo "10.1.1.5 master-node" | sudo tee -a /etc/hosts
+echo "$IP_ADDRESS master-node" | sudo tee -a /etc/hosts
 
 # Update kubelet configuration
 echo 'KUBELET_EXTRA_ARGS="--cgroup-driver=cgroupfs"' | sudo tee /etc/default/kubelet
@@ -103,3 +103,8 @@ kubectl get nodes
 kubectl create deployment nginx --image=nginx
 kubectl expose deployment nginx --port=80 --target-port=80 --type=NodePort
 
+# Check the pods
+kubectl get pods
+
+# Check the service
+kubectl get svc

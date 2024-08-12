@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Variables
+SERVICE_ACCOUNT_NAME=xc-service-account
+NAMESPACE=default
+ROLE_NAME=service-discovery-role
+ROLE_BINDING_NAME=service-discovery-binding
+
+# Step 1: Delete the RoleBinding
+echo "Deleting RoleBinding: $ROLE_BINDING_NAME in namespace: $NAMESPACE"
+kubectl delete rolebinding $ROLE_BINDING_NAME -n $NAMESPACE
+
+# Step 2: Delete the Role
+echo "Deleting Role: $ROLE_NAME in namespace: $NAMESPACE"
+kubectl delete role $ROLE_NAME -n $NAMESPACE
+
+# Step 3: Delete the Service Account
+echo "Deleting ServiceAccount: $SERVICE_ACCOUNT_NAME in namespace: $NAMESPACE"
+kubectl delete serviceaccount $SERVICE_ACCOUNT_NAME -n $NAMESPACE
+
+# Step 4: Clean up the kubeconfig file if it exists
+KUBECONFIG_FILE=./kubeconfig
+if [ -f "$KUBECONFIG_FILE" ]; then
+    echo "Deleting kubeconfig file: $KUBECONFIG_FILE"
+    rm -f $KUBECONFIG_FILE
+else
+    echo "No kubeconfig file found to delete."
+fi
+
+echo "Cleanup completed."
