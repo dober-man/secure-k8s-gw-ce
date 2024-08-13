@@ -4,6 +4,8 @@
 ROLE_NAME=service-discovery-role
 ROLE_BINDING_NAME=service-discovery-binding
 KUBECONFIG_FILE=./kubeconfig
+read -p "Enter the IP Addr of the Kube API Server [default: 10.1.1.6]: " IP-ADDR
+IP-ADDR=${IP-ADDR:-10.1.1.6}
 
 # User Defined Variables with Default Values
 read -p "Enter the Namespace [default: default]: " NAMESPACE
@@ -15,8 +17,12 @@ SERVICE_ACCOUNT_NAME=${SERVICE_ACCOUNT_NAME:-xc-sa}
 echo 'Creating Service Account real quick...'
 kubectl create serviceaccount $SERVICE_ACCOUNT_NAME -n $NAMESPACE
 
-# Generate Token
+
+# Generate Token 
+# Note this token is good for the default of 1 hour. You can adjust this by running the 
+# token-timeout-utility.sh and defining your timeout parameters. 
 TOKEN=$(kubectl create token $SERVICE_ACCOUNT_NAME -n $NAMESPACE)
+echo 'Token Created'
 
 # Warning Message
 echo "###############################################"
@@ -37,7 +43,8 @@ kubectl patch serviceaccount $SERVICE_ACCOUNT_NAME -n $NAMESPACE -p '{"secrets":
 SECRET_NAME="xc-sa-secret"
 
 # Extract the CA certificate (already created by us, so no need to extract it again)
-CACRT=$(cat /etc/kubernetes/pki/ca.crt | base64 --decode)
+#CACRT=$(cat /etc/kubernetes/pki/ca.crt | base64 --decode)
+CACRT=$(cat /etc/kubernetes/pki/ca.crt | base64 | tr -d '\n')
 
 # Create and Apply a Role with Service Discovery Permissions
 cat <<EOF | kubectl apply -f -
@@ -79,8 +86,7 @@ kind: Config
 clusters:
 - name: kubernetes
   cluster:
-    certificate-authority-data: |
-$(echo "$CACRT" | sed 's/^/      /')
+    certificate-authority-data: $(echo "$CACRT" | sed 's/^/      /')
     server: $APISERVER
 contexts:
 - name: service-discovery-context
@@ -92,8 +98,7 @@ current-context: service-discovery-context
 users:
 - name: $SERVICE_ACCOUNT_NAME
   user:
-    token: |
-$(echo "$TOKEN" | sed 's/.\{64\}/&\n/g' | sed 's/^/      /')
+    token: \"$TOKEN\"
 " > $KUBECONFIG_FILE
 
 # Install tools to finesse yaml on kubeconfig output file
