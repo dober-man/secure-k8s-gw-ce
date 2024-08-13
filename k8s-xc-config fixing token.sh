@@ -104,11 +104,6 @@ users:
     token: $TOKEN
 " > $KUBECONFIG_FILE
 
-# Install tools to finesse yaml on kubeconfig output file
-sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
-sudo chmod +x /usr/bin/yq
-sudo apt-get install -y yamllint
-
 # Clean up the YAML with yq
 yq eval -P $KUBECONFIG_FILE -o yaml > cleaned_kubeconfig.yaml
 

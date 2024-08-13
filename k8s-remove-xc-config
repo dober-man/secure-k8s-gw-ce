@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables
-SERVICE_ACCOUNT_NAME=xc-service-account
+SERVICE_ACCOUNT_NAME=xc-sa
 NAMESPACE=default
 ROLE_NAME=service-discovery-role
 ROLE_BINDING_NAME=service-discovery-binding
@@ -18,7 +18,10 @@ kubectl delete role $ROLE_NAME -n $NAMESPACE
 echo "Deleting ServiceAccount: $SERVICE_ACCOUNT_NAME in namespace: $NAMESPACE"
 kubectl delete serviceaccount $SERVICE_ACCOUNT_NAME -n $NAMESPACE
 
-# Step 4: Clean up the kubeconfig file if it exists
+# Step 4: Delete the Secret
+kubectl delete secret xc-sa-secret
+
+# Step 5: Clean up the kubeconfig file if it exists
 KUBECONFIG_FILE=./kubeconfig
 if [ -f "$KUBECONFIG_FILE" ]; then
     echo "Deleting kubeconfig file: $KUBECONFIG_FILE"

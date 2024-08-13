@@ -46,9 +46,6 @@ sudo sysctl --system
 # Set hostname
 sudo hostnamectl set-hostname master-node
 
-# Update /etc/hosts file
-echo "$IP_ADDRESS master-node" | sudo tee -a /etc/hosts
-
 # Update kubelet configuration
 echo 'KUBELET_EXTRA_ARGS="--cgroup-driver=cgroupfs"' | sudo tee /etc/default/kubelet
 

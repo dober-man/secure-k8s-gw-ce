@@ -9,10 +9,14 @@ Ubuntu-k8s (Ubuntu 22.04) 4/16/100
 
 ssh into ubuntu-k8s server
 Run k8s-setup.sh (https://github.com/dober-man/udf-ubuntu-k8s/tree/main)
+# Update /etc/hosts file
+echo "$IP_ADDRESS master-node" | sudo tee -a /etc/hosts
 Verify service is exposed
 
 Setup K8s for Service Discovery from XC-CE
 Run k8s-xc-setup.sh (https://github.com/dober-man/udf-ubuntu-k8s/tree/main)
+
+
 
 Run: cat ./kubeconfig
 Note – you will most likely need to change the server name to an IP if the CE cannot resolve the server name 
