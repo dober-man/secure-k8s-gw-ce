@@ -1,21 +1,45 @@
 #!/bin/bash
 
 # Variables
-SERVICE_ACCOUNT_NAME=xc-service-account
-NAMESPACE=default
 ROLE_NAME=service-discovery-role
 ROLE_BINDING_NAME=service-discovery-binding
 KUBECONFIG_FILE=./kubeconfig
 
-# Install tools to finesse yaml on kubeconfig output file
-sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
-sudo chmod +x /usr/bin/yq
-sudo apt-get install -y yamllint
+# User Defined Variables with Default Values
+read -p "Enter the Namespace [default: default]: " NAMESPACE
+NAMESPACE=${NAMESPACE:-default}
 
-# Step 1: Create a Service Account
+read -p "Enter the Service Account Name [default: xc-sa]: " SERVICE_ACCOUNT_NAME
+SERVICE_ACCOUNT_NAME=${SERVICE_ACCOUNT_NAME:-xc-sa}
+
+echo 'Creating Service Account real quick...'
 kubectl create serviceaccount $SERVICE_ACCOUNT_NAME -n $NAMESPACE
 
-# Step 2: Create and Apply a Role with Service Discovery Permissions
+# Generate Token
+TOKEN=$(kubectl create token $SERVICE_ACCOUNT_NAME -n $NAMESPACE)
+
+# Warning Message
+echo "###############################################"
+echo "# WARNING: The generated token is sensitive!  #"
+echo "# Keep this token private and do not share it! #"
+echo "###############################################"
+
+# Print the generated token
+#echo "Generated Token: $TOKEN"
+
+# Create a secret
+kubectl create secret generic xc-sa-secret --from-literal=token=$TOKEN --from-file=ca.crt=/etc/kubernetes/pki/ca.crt -n $NAMESPACE
+
+# Patch the ServiceAccount with the new secret
+kubectl patch serviceaccount $SERVICE_ACCOUNT_NAME -n $NAMESPACE -p '{"secrets": [{"name": "xc-sa-secret"}]}'
+
+# Get the secret name associated with the ServiceAccount (this will now include the newly created secret)
+SECRET_NAME="xc-sa-secret"
+
+# Extract the CA certificate (already created by us, so no need to extract it again)
+CACRT=$(cat /etc/kubernetes/pki/ca.crt | base64 --decode)
+
+# Create and Apply a Role with Service Discovery Permissions
 cat <<EOF | kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -28,7 +52,7 @@ rules:
   verbs: ["get", "list", "watch"]
 EOF
 
-# Step 3: Create and Apply the Role Binding
+# Create and Apply the Role Binding
 cat <<EOF | kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -45,43 +69,10 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 EOF
 
-# Step 4: Manually create and Bind Secret
-kubectl create secret generic ${SERVICE_ACCOUNT_NAME}-token --from-literal=token=$(openssl rand -hex 32) --from-file=ca.crt=/etc/kubernetes/pki/ca.crt -n $NAMESPACE
-kubectl patch serviceaccount $SERVICE_ACCOUNT_NAME -n $NAMESPACE -p '{"secrets": [{"name": "'${SERVICE_ACCOUNT_NAME}-token'"}]}'
-
-
-# Step 5: Extract the Service Account Token and CA Certificate with retry mechanism
-SECRET_NAME=""
-RETRIES=5
-for i in $(seq 1 $RETRIES); do
-    SECRET_NAME=$(kubectl get serviceaccount $SERVICE_ACCOUNT_NAME -n $NAMESPACE -o jsonpath='{.secrets[0].name}')
-    if [ ! -z "$SECRET_NAME" ]; then
-        break
-    fi
-    echo "Waiting for the secret to be created... ($i/$RETRIES)"
-    sleep 5
-done
-
-if [ -z "$SECRET_NAME" ]; then
-  echo "Error: Failed to retrieve the secret name after $RETRIES attempts."
-  exit 1
-fi
-
-TOKEN=$(kubectl get secret $SECRET_NAME -n $NAMESPACE -o jsonpath='{.data.token}' | base64 --decode)
-CACRT=$(kubectl get secret $SECRET_NAME -n $NAMESPACE -o jsonpath='{.data.ca\.crt}' | base64 --decode)
-
-# Debugging: Check if the token was extracted correctly
-if [ -z "$TOKEN" ]; then
-  echo "Error: Token extraction failed. Token is empty."
-  exit 1
-else
-  echo "Token extracted successfully."
-fi
-
-# Step 5: Get the API Server URL
+# Get the API Server URL
 APISERVER=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
 
-# Step 6: Generate the kubeconfig File
+# Generate the kubeconfig File
 echo "---
 apiVersion: v1
 kind: Config
@@ -89,7 +80,7 @@ clusters:
 - name: kubernetes
   cluster:
     certificate-authority-data: |
-$(echo "$CACRT" | base64 | sed 's/^/      /')
+$(echo "$CACRT" | sed 's/^/      /')
     server: $APISERVER
 contexts:
 - name: service-discovery-context
@@ -101,8 +92,14 @@ current-context: service-discovery-context
 users:
 - name: $SERVICE_ACCOUNT_NAME
   user:
-    token: $TOKEN
+    token: |
+$(echo "$TOKEN" | sed 's/.\{64\}/&\n/g' | sed 's/^/      /')
 " > $KUBECONFIG_FILE
+
+# Install tools to finesse yaml on kubeconfig output file
+sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
+sudo chmod +x /usr/bin/yq
+sudo apt-get install -y yamllint
 
 # Clean up the YAML with yq
 yq eval -P $KUBECONFIG_FILE -o yaml > cleaned_kubeconfig.yaml
