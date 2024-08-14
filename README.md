@@ -16,12 +16,11 @@ XC Console - (You will need owner/admin access to a tenant)
 
 ## Install K8s
 ssh into ubuntu-k8s server
-Run k8s-install.sh (https://github.com/dober-man/udf-ubuntu-k8s/tree/main)
 
+Run k8s-install.sh
 
 ## Setup K8s for Service Discovery from XC-CE
-Run xc-k8s-setup.sh (https://github.com/dober-man/udf-ubuntu-k8s/tree/main)
-
+Run xc-k8s-setup.sh
 
 
 Run: cat ./kubeconfig
