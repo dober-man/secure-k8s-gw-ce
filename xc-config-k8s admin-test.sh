@@ -1,5 +1,5 @@
 #!/bin/bash
-#8/14 this script is not functional yet as the service account does not seem to have the necessary perms. ticket opened to clarify. 
+#8/14 This script works but is just a PoC...it is overly permissive. 
 
 # Variables
 ROLE_NAME=service-discovery-role
@@ -19,7 +19,6 @@ SERVICE_ACCOUNT_NAME=${SERVICE_ACCOUNT_NAME:-xc-sa}
 echo 'Creating Service Account real quick...'
 kubectl create serviceaccount $SERVICE_ACCOUNT_NAME -n $NAMESPACE
 
-
 # Generate 1 Hour Token 
 # Note this token is good for the default of 1 hour. You can adjust this by running the 
 # token-timeout-utility.sh and defining your timeout parameters. 
@@ -30,15 +29,11 @@ echo 'Token Created'
 #DURATION=24
 #TOKEN=$(kubectl create token $SERVICE_ACCOUNT_NAME -n $NAMESPACE --duration=$DURATION)
 
-
 # Warning Message
 echo "###############################################"
 echo "# WARNING: The generated token is sensitive!  #"
 echo "# Keep this token private and do not share it! #"
 echo "###############################################"
-
-# Print the generated token
-#echo "Generated Token: $TOKEN"
 
 # Create a secret
 kubectl create secret generic xc-sa-secret --from-literal=token=$TOKEN --from-file=ca.crt=/etc/kubernetes/pki/ca.crt -n $NAMESPACE
@@ -111,6 +106,9 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 EOF
 
+# Add ClusterRoleBinding for Cluster Admin privileges (for testing)
+kubectl create clusterrolebinding ${SERVICE_ACCOUNT_NAME}-cluster-admin-binding --clusterrole=cluster-admin --serviceaccount=${NAMESPACE}:${SERVICE_ACCOUNT_NAME}
+
 # Get the API Server URL
 APISERVER=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
 
@@ -142,7 +140,6 @@ sudo chmod +x /usr/bin/yq
 
 # Clean up the YAML with yq
 yq eval -P $KUBECONFIG_FILE -o yaml > cleaned_kubeconfig.yaml
-
 
 mv cleaned_kubeconfig.yaml $KUBECONFIG_FILE
 
