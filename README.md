@@ -39,6 +39,15 @@ The k8s-install.sh script performs the following tasks:
 2. Give script exe permissions (chmod +x xc-k8s-setup.sh)
 3. Run xc-k8s-setup.sh
 
+### Script Overview
+The xc-config-k8s.sh script performs the following tasks:
+
+* Validates and sets up the necessary Kubernetes ServiceAccounts, Roles, and RoleBindings.
+* Generates and applies secure configurations for Kubernetes.
+* Validates the generated YAML files to ensure they are well-formatted.
+* Manages ServiceAccount tokens, including generating tokens with extended expiration.
+   
+
 ## Extract kubeconfig file content for use in XC Console "Service Discovery" definition. 
 1. In $HOME directory run: cat ./kubeconfig
 
