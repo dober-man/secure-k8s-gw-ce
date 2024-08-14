@@ -72,9 +72,13 @@ Step 1: Login to tenant – create and record get site token:
 #### Multicloud Network Connect -> Manage -> Site Management -> Site Tokens -> Create
 
 Step 2: Console or Site UI into XC-CE
+
 admin/Volterra123 – change passwd
+
 configure now...
+
 enter Site Token from previous step
+
 voltstack-combo
 
 ### XC Console 
@@ -83,9 +87,13 @@ Accept
 #### Multicloud App Connect -> Manage -> Service Discovery -> Add Discovery
 
 Name: my-sd
+
 Virtual-Site or Site or Network: Site
+
 Reference: - [choose your CE site]
+
 Network Type: Site Local Network
+
 Discovery Method: K8s Discovery Configuration
  
 <img width="1164" alt="image" src="https://github.com/user-attachments/assets/ad8ddbe6-8360-4228-97ed-ee0511074dc3">
@@ -93,7 +101,9 @@ Discovery Method: K8s Discovery Configuration
 Click on "Configure" under *K8S Discovery Configuration
 
 #### Access credentials: 
- 
+
+
+
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/1e7f05e8-4cf0-49a4-8b15-c6554ff26ba0">
 
 ...add further description of options
