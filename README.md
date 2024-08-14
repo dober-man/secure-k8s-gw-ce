@@ -80,4 +80,5 @@ For access credentials:
  
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/1e7f05e8-4cf0-49a4-8b15-c6554ff26ba0">
 
-
+...add further description of options
+...add creating LB and testing
