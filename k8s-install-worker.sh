@@ -1,12 +1,11 @@
 #!/bin/bash
 
 # User-defined variables
-HOSTNAME="master-node"
+HOSTNAME="worker-node"
 read -p "Enter the IP address for this node: " IP_ADDRESS
 
-# Set Host file
-echo "$IP_ADDRESS master-node" | sudo tee -a /etc/hosts 
-
+# Set Host File
+echo "$IP_ADDRESS worker-node" | sudo tee -a /etc/hosts 
 
 # Update and install Docker
 sudo apt update
@@ -27,6 +26,7 @@ sudo apt install kubeadm kubelet kubectl -y
 sudo apt-mark hold kubeadm kubelet kubectl
 
 # Disable swap
+sudo swapoff -a
 sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
 # Load necessary kernel modules
@@ -47,7 +47,7 @@ EOF
 
 sudo sysctl --system
 
-# Set hostname 
+# Set hostname
 sudo hostnamectl set-hostname $HOSTNAME
 
 # Update kubelet configuration
@@ -82,30 +82,7 @@ echo 'Environment="KUBELET_EXTRA_ARGS=--fail-swap-on=false"' | sudo tee -a /usr/
 # Reload systemd and restart kubelet
 sudo systemctl daemon-reload && sudo systemctl restart kubelet
 
-# Initialize the Kubernetes control plane
-sudo kubeadm init --control-plane-endpoint=master-node --upload-certs
+# Prompt for kubeadm join command (you can replace this with an actual join command if you have the token and control-plane IP)
+read -p "Enter the kubeadm join command: " JOIN_COMMAND
+$JOIN_COMMAND
 
-# Set up kubeconfig for the regular user
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-# Remove control-plane taints to allow scheduling pods
-kubectl taint nodes --all node-role.kubernetes.io/control-plane-
-
-# Install Calico for network policies
-kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
-
-
-# Check the nodes
-kubectl get nodes
-
-# Create a deployment and expose it
-kubectl create deployment nginx --image=nginx
-kubectl expose deployment nginx --port=80 --target-port=80 --type=NodePort
-
-# Check the service
-kubectl get svc
-
-# Check the pods
-kubectl get pods
