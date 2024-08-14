@@ -25,7 +25,7 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-# Step 1: Modify the kube-apiserver manifest to set the token expiration to the user-defined duration
+# Modify the kube-apiserver manifest to set the token expiration to the user-defined duration
 echo "Modifying the API server configuration to allow a $DURATION_DAYS-day token expiration..."
 sed -i '/--service-account-max-token-expiration=/d' $APISERVER_YAML
 sed -i "/kube-apiserver/a \    - --service-account-max-token-expiration=$DURATION_HOURS" $APISERVER_YAML
@@ -40,14 +40,3 @@ else
   docker restart $KUBE_API_CONTAINER_ID
 fi
 
-# Step 2: Generate the token with the user-defined duration
-echo "Generating a token for the ServiceAccount '$SERVICE_ACCOUNT_NAME' in the namespace '$NAMESPACE' with a duration of $DURATION_DAYS days..."
-TOKEN=$(kubectl create token $SERVICE_ACCOUNT_NAME -n $NAMESPACE --duration=$DURATION_HOURS --kubeconfig=$KUBECONFIG_FILE)
-
-if [ $? -eq 0 ]; then
-  echo "Token generated successfully:"
-  echo $TOKEN
-else
-  echo "Failed to generate the token."
-  exit 1
-fi

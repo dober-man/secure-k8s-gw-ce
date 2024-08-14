@@ -102,8 +102,8 @@ kubectl get nodes
 kubectl create deployment nginx --image=nginx
 kubectl expose deployment nginx --port=80 --target-port=80 --type=NodePort
 
-# Check the pods
-kubectl get pods
-
 # Check the service
 kubectl get svc
+
+# Check the pods
+kubectl get pods

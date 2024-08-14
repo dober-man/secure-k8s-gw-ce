@@ -9,8 +9,8 @@ KUBECONFIG_FILE=./kubeconfig
 read -p "Enter the Namespace [default: default]: " NAMESPACE
 NAMESPACE=${NAMESPACE:-default}
 
-read -p "Enter the IP Addr of the Kube API Server [default: 10.1.1.6]: " IP-ADDR
-IP-ADDR=${IP-ADDR:-10.1.1.6}
+read -p "Enter the IP Addr of the Kube API Server [default: 10.1.1.6]: " IP_ADDR
+IP_ADDR=${IP_ADDR:-10.1.1.6}
 
 read -p "Enter the Service Account Name [default: xc-sa]: " SERVICE_ACCOUNT_NAME
 SERVICE_ACCOUNT_NAME=${SERVICE_ACCOUNT_NAME:-xc-sa}
@@ -19,11 +19,16 @@ echo 'Creating Service Account real quick...'
 kubectl create serviceaccount $SERVICE_ACCOUNT_NAME -n $NAMESPACE
 
 
-# Generate Token 
+# Generate 1 Hour Token 
 # Note this token is good for the default of 1 hour. You can adjust this by running the 
 # token-timeout-utility.sh and defining your timeout parameters. 
 TOKEN=$(kubectl create token $SERVICE_ACCOUNT_NAME -n $NAMESPACE)
 echo 'Token Created'
+
+# Generate token with duration. Uncomment below two lines after running the set-token-timeout-util. Set duration in hours
+#DURATION=24
+#TOKEN=$(kubectl create token $SERVICE_ACCOUNT_NAME -n $NAMESPACE --duration=$DURATION)
+
 
 # Warning Message
 echo "###############################################"
@@ -56,7 +61,7 @@ metadata:
   namespace: $NAMESPACE
 rules:
 - apiGroups: [""]
-  resources: ["services", "endpoints"]
+  resources: ["services", "endpoints", "namespaces", ]
   verbs: ["get", "list", "watch"]
 EOF
 
@@ -113,5 +118,5 @@ yq eval -P $KUBECONFIG_FILE -o yaml > cleaned_kubeconfig.yaml
 mv cleaned_kubeconfig.yaml $KUBECONFIG_FILE
 
 echo "kubeconfig file generated at: $KUBECONFIG_FILE"
-echo "The token in this kubeconfig file is good for the default of 1 hour. You can adjust this by running the 
-token-timeout-utility.sh to update the duration in the kubeapi manifest and defining your timeout parameters. 
+echo "The token in this kubeconfig file is good for the k8s default of 1 hour. View the Readme.md for more info."
+echo "You can test the token by running the following command: kubectl --kubeconfig=$HOME/kubeconfig get services -n default"
