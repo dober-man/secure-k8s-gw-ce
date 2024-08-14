@@ -98,13 +98,49 @@ Discovery Method: K8s Discovery Configuration
  
 <img width="1164" alt="image" src="https://github.com/user-attachments/assets/ad8ddbe6-8360-4228-97ed-ee0511074dc3">
 
-Click on "Configure" under *K8S Discovery Configuration
+Click on "Configure" under K8S Discovery Configuration
 
 #### Access credentials: 
 
+Select Kubernetes Credentials: Kubeconfig
 
+Click "Configure" under Kubeconfig
 
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/1e7f05e8-4cf0-49a4-8b15-c6554ff26ba0">
+Secret Type: Blindfolded
 
-...add further description of options
+Action: Blindfold New Secret
+
+Policy Type: Built-in
+
+Secret to Blindfold: [this is the content of the $HOME/kubeconfig file that was generated on the host that you ran the xc-config-k8s.sh script.] Note - make sure to change the server name to IP if the CE can't resolve the hostname in the server definition within the file. 
+
+File: 
+
+<img width="607" alt="image" src="https://github.com/user-attachments/assets/54bb85bd-42ea-4d35-ae2b-dd83fd597977">
+
+Secret in XC Console
+
+<img width="624" alt="image" src="https://github.com/user-attachments/assets/1e3fdd04-9f29-4a83-b256-56be288c0b6e">
+
+Click "Apply"
+
+<img width="1088" alt="image" src="https://github.com/user-attachments/assets/8eee82dc-08d5-469e-986e-fccfeb08fc9b">
+
+todo: add further description of options
+
+## Publish the Service
+
+Create Origin Pool: 
+
+#### Multicloud App Connect -> Manage -> Load Balancers -> Origin Pools
+
+<img width="1175" alt="image" src="https://github.com/user-attachments/assets/7d997917-fae5-486b-bc23-a7d47fc0fdf1">
+
+<img width="1159" alt="image" src="https://github.com/user-attachments/assets/56b82090-a620-4415-8786-63ad4d214cc7">
+
+Note: You must specify port 80 for the origin pool (even though it is technically dynamic at the Node/pod level)
+
+Create http load balancer: 
+
+#### Multicloud App Connect -> Manage -> Load Balancers -> http load balancer
 ...add creating LB and testing
