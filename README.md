@@ -61,18 +61,27 @@ Note: The file content will contain a "server" definition pointing to whatever s
 Note: This is highly sensitive data and should be secured as such. 
 You will soon paste this output into XC Console Service Discovery as a blindfolded secret. 
 
-## XC Console
+## XC Console Prereqs
 (You will need owner level admin access to tenant)
-Login to tenant – get site token
+or Permissions Needed: 
+   * Perm1
+   * Perm2
 
-Console or Site UI into XC-CE
+Step 1: Login to tenant – create and record get site token: 
+
+#### Multicloud Network Connect -> Manage -> Site Management -> Site Tokens -> Create
+
+Step 2: Console or Site UI into XC-CE
 admin/Volterra123 – change passwd
-configure now 
-enter 
+configure now...
+enter Site Token from previous step
 voltstack-combo
 
-In XC Console - Register – Accept
-Create Service Discovery 
+### XC Console 
+#### Multicloud Network Connect -> Manage -> Site Management -> Registrations
+Accept
+#### Multicloud App Connect -> Manage -> Service Discovery -> Add Discovery
+
  
 <img width="210" alt="image" src="https://github.com/user-attachments/assets/bbafcf13-b282-4e5b-8a20-ecfc84f283b2">
 
