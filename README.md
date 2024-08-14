@@ -1,10 +1,12 @@
 # Overview and Goals 
 1.  Build and configure a ubuntu server with k8's running simple nginx web server listening on NodePort. 
 2.  Configure XC virtual CE for Service Discovery
-3.  Publish and secure service to public 
-               CPU/RAM/DISK
-XC-CE (RHEL) - 8/32/200
-Ubuntu-k8s (Ubuntu 22.04) 4/16/100
+3.  Publish and secure service to public
+   
+#### CPU/RAM/DISK               
+XC virtual CE (RHEL) - 8/32/200
+
+Ubuntu K8s (Vanilla Install of Ubuntu 22.04) 4/16/100
 
 ssh into ubuntu-k8s server
 Run k8s-setup.sh (https://github.com/dober-man/udf-ubuntu-k8s/tree/main)
