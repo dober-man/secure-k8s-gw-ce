@@ -4,12 +4,13 @@
 ROLE_NAME=service-discovery-role
 ROLE_BINDING_NAME=service-discovery-binding
 KUBECONFIG_FILE=./kubeconfig
-read -p "Enter the IP Addr of the Kube API Server [default: 10.1.1.6]: " IP-ADDR
-IP-ADDR=${IP-ADDR:-10.1.1.6}
 
 # User Defined Variables with Default Values
 read -p "Enter the Namespace [default: default]: " NAMESPACE
 NAMESPACE=${NAMESPACE:-default}
+
+read -p "Enter the IP Addr of the Kube API Server [default: 10.1.1.6]: " IP-ADDR
+IP-ADDR=${IP-ADDR:-10.1.1.6}
 
 read -p "Enter the Service Account Name [default: xc-sa]: " SERVICE_ACCOUNT_NAME
 SERVICE_ACCOUNT_NAME=${SERVICE_ACCOUNT_NAME:-xc-sa}

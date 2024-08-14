@@ -3,6 +3,7 @@
 # User-defined variables
 HOSTNAME="master-node"
 read -p "Enter the IP address for this node: " IP_ADDRESS
+echo "$IP_ADDRESS master-node" | sudo tee -a /etc/hosts 
 
 # Update and install Docker
 sudo apt update
@@ -43,8 +44,9 @@ EOF
 
 sudo sysctl --system
 
-# Set hostname
+# Set hostname & host file
 sudo hostnamectl set-hostname master-node
+echo "$IP_ADDRESS master-node" | sudo tee -a /etc/hosts 
 
 # Update kubelet configuration
 echo 'KUBELET_EXTRA_ARGS="--cgroup-driver=cgroupfs"' | sudo tee /etc/default/kubelet
