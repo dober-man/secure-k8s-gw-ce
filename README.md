@@ -2,8 +2,7 @@
 1.  Build and configure a ubuntu server with k8's running simple nginx web server listening on NodePort. 
 2.  Configure XC virtual CE for Service Discovery
 3.  Publish and secure service to public 
-
-Appstack 2024 BP
+               CPU/RAM/DISK
 XC-CE (RHEL) - 8/32/200
 Ubuntu-k8s (Ubuntu 22.04) 4/16/100
 
