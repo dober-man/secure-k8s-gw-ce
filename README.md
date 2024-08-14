@@ -54,7 +54,7 @@ Note: This timeout can be modified by updating the kubeapi manifest. There is a 
 ## Extract kubeconfig file content for use in XC Console "Service Discovery" definition. 
 1. In $HOME directory run: cat ./kubeconfig
 
-Note: The file content will contain a "server" definition pointing to whatever server hostname you used when deplopying the script initially. (This may need to be changed to an ip address when importing the kubeconfig to XC service discovery definition if the CE is not able to resolve the server name configured)
+Note: The file content will contain a "server" definition pointing to whatever server hostname you used when deploying the script initially. (This may need to be changed to an ip address when importing the kubeconfig to XC service discovery definition if the CE is not able to resolve the server name configured)
 
 2. Copy the contents of the file to your clipboard and make sure to not grab any trailing whitespaces or extras. 
 
