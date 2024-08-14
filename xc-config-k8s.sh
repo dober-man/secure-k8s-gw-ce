@@ -104,7 +104,6 @@ users:
 # Install tools to finesse yaml on kubeconfig output file
 sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
 sudo chmod +x /usr/bin/yq
-sudo apt-get install -y yamllint
 
 # Clean up the YAML with yq
 yq eval -P $KUBECONFIG_FILE -o yaml > cleaned_kubeconfig.yaml
@@ -113,5 +112,5 @@ yq eval -P $KUBECONFIG_FILE -o yaml > cleaned_kubeconfig.yaml
 mv cleaned_kubeconfig.yaml $KUBECONFIG_FILE
 
 echo "kubeconfig file generated at: $KUBECONFIG_FILE"
-
-yamllint kubeconfig
+echo "The token in this kubeconfig file is good for the default of 1 hour. You can adjust this by running the 
+token-timeout-utility.sh to update the duration in the kubeapi manifest and defining your timeout parameters. 
