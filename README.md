@@ -2,20 +2,25 @@
 1.  Build and configure a ubuntu server with k8's running simple nginx web server listening on NodePort. 
 2.  Configure XC virtual CE for Service Discovery
 3.  Publish and secure service to public
-   
+
+## Prerequisite    
 #### CPU/RAM/DISK               
 XC virtual CE (RHEL) - 8/32/200
 
 Ubuntu K8s (Vanilla Install of Ubuntu 22.04) 4/16/100
 
-ssh into ubuntu-k8s server
-Run k8s-setup.sh (https://github.com/dober-man/udf-ubuntu-k8s/tree/main)
-# Update /etc/hosts file
-echo "$IP_ADDRESS master-node" | sudo tee -a /etc/hosts
-Verify service is exposed
+XC Console - (You will need owner/admin access to a tenant)
+   Permissions Needed: 
+   * Perm1
+   * Perm2
 
-Setup K8s for Service Discovery from XC-CE
-Run k8s-xc-setup.sh (https://github.com/dober-man/udf-ubuntu-k8s/tree/main)
+## Install K8s
+ssh into ubuntu-k8s server
+Run k8s-install.sh (https://github.com/dober-man/udf-ubuntu-k8s/tree/main)
+
+
+## Setup K8s for Service Discovery from XC-CE
+Run xc-k8s-setup.sh (https://github.com/dober-man/udf-ubuntu-k8s/tree/main)
 
 
 
