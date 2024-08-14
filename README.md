@@ -82,10 +82,17 @@ voltstack-combo
 Accept
 #### Multicloud App Connect -> Manage -> Service Discovery -> Add Discovery
 
+Name: my-sd
+Virtual-Site or Site or Network: Site
+Reference: - [choose your CE site]
+Network Type: Site Local Network
+Discovery Method: K8s Discovery Configuration
  
-<img width="210" alt="image" src="https://github.com/user-attachments/assets/bbafcf13-b282-4e5b-8a20-ecfc84f283b2">
+<img width="1164" alt="image" src="https://github.com/user-attachments/assets/ad8ddbe6-8360-4228-97ed-ee0511074dc3">
 
-For access credentials: 
+Click on "Configure" under *K8S Discovery Configuration
+
+#### Access credentials: 
  
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/1e7f05e8-4cf0-49a4-8b15-c6554ff26ba0">
 
