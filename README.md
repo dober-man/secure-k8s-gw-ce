@@ -9,7 +9,7 @@
 * Customizable Options: Users can define custom settings for the installation, ensuring the setup meets their specific requirements.
 
 ## Prerequisite    
-#### CPU/RAM/DISK               
+### CPU/RAM/DISK               
 XC virtual CE (RHEL) - 8/32/200
 
 Ubuntu K8s (Vanilla Install of Ubuntu 22.04) 4/16/100
@@ -25,7 +25,7 @@ XC Console - (You will need owner/admin access to a tenant)
 3. Give script exe permissions (chmod +x k8s-install.sh)
 4. Run ./k8s-install.sh
 
-# Script Overview
+### Script Overview
 The k8s-install.sh script performs the following tasks:
 
 * Installs required packages and dependencies
