@@ -6,13 +6,13 @@ ROLE_BINDING_NAME=service-discovery-binding
 KUBECONFIG_FILE=./kubeconfig
 
 # User Defined Variables with Default Values
-read -p "Enter the Namespace [default: default]: " NAMESPACE
+read -p "Enter the Namespace [Default= default]: " NAMESPACE
 NAMESPACE=${NAMESPACE:-default}
 
-read -p "Enter the IP Addr of the Kube API Server [default: 10.1.1.6]: " IP_ADDR
+read -p "Enter the IP Addr of the Kube API Server [Default= 10.1.1.6]: " IP_ADDR
 IP_ADDR=${IP_ADDR:-10.1.1.6}
 
-read -p "Enter the Service Account Name [default: xc-sa]: " SERVICE_ACCOUNT_NAME
+read -p "Enter the Service Account Name [Default= xc-sa]: " SERVICE_ACCOUNT_NAME
 SERVICE_ACCOUNT_NAME=${SERVICE_ACCOUNT_NAME:-xc-sa}
 
 echo 'Creating Service Account real quick...'
@@ -61,7 +61,7 @@ metadata:
   namespace: $NAMESPACE
 rules:
 - apiGroups: [""]
-  resources: ["services", "endpoints", "namespaces", ]
+  resources: ["services", "endpoints" ]
   verbs: ["get", "list", "watch"]
 EOF
 
@@ -79,6 +79,36 @@ subjects:
 roleRef:
   kind: Role
   name: $ROLE_NAME
+  apiGroup: rbac.authorization.k8s.io
+EOF
+
+# Create and Apply a Role with Namespace Access Permissions specifically for the kube-system namespace
+cat <<EOF | kubectl apply -f -
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: ${ROLE_NAME}-kube-system
+  namespace: $KUBE_SYSTEM_NAMESPACE
+rules:
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["get", "list"]
+EOF
+
+# Create and Apply the Role Binding in the kube-system namespace
+cat <<EOF | kubectl apply -f -
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ${ROLE_BINDING_NAME}-kube-system
+  namespace: $KUBE_SYSTEM_NAMESPACE
+subjects:
+- kind: ServiceAccount
+  name: $SERVICE_ACCOUNT_NAME
+  namespace: $NAMESPACE
+roleRef:
+  kind: Role
+  name: ${ROLE_NAME}-kube-system
   apiGroup: rbac.authorization.k8s.io
 EOF
 
