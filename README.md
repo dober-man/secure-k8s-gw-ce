@@ -1,3 +1,6 @@
+# Why Service Discovery with a CE? 
+With the F5 XC Virtual Edition Customer Edge platform it can be deployed within your data center or cloud environment and perform service discovery for services in your kubernetes (k8s) cluster. The CE uses the kubeapi to query for services as they come online. Admins can then reference these discovered services in their XC origin pool definitions and publish them locally through a proxy (http load balancer) on the CE itself or via our Global Application Delivery Network (Regional Edge Deployment). The http load balancer can offer a suite of security services providing an easy to consume layered security model with global redundancy while serving content from private k8's cluster. 
+
 # Overview and Goals 
 1.  Build and configure a Ubuntu server with K8's running simple NGINX web server exposed on NodePort. 
 2.  Configure XC virtual CE for Service Discovery
@@ -8,7 +11,8 @@
 * Security Enhancements: Includes configurations to enhance the security of your Kubernetes setup.
 * Customizable Options: Users can define custom settings for the installation, ensuring the setup meets their specific requirements.
 
-## Prerequisite    
+## Prerequisite
+
 ### CPU/RAM/DISK               
 XC virtual CE (RHEL) - 8/32/200
 
