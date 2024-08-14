@@ -55,29 +55,27 @@ CACRT=$(cat /etc/kubernetes/pki/ca.crt | base64 | tr -d '\n')
 # Create and Apply a Role with Service Discovery Permissions
 cat <<EOF | kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
   name: $ROLE_NAME
-  namespace: $NAMESPACE
 rules:
 - apiGroups: [""]
-  resources: ["services", "endpoints" ]
+  resources: ["services", "endpoints", "namespaces"]
   verbs: ["get", "list", "watch"]
 EOF
 
 # Create and Apply the Role Binding
 cat <<EOF | kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
-  name: $ROLE_BINDING_NAME
-  namespace: $NAMESPACE
+  name: ${ROLE_NAME}-binding
 subjects:
 - kind: ServiceAccount
-  name: $SERVICE_ACCOUNT_NAME
+  name: xc-sa
   namespace: $NAMESPACE
 roleRef:
-  kind: Role
+  kind: ClusterRole
   name: $ROLE_NAME
   apiGroup: rbac.authorization.k8s.io
 EOF
@@ -149,4 +147,4 @@ mv cleaned_kubeconfig.yaml $KUBECONFIG_FILE
 
 echo "kubeconfig file generated at: $KUBECONFIG_FILE"
 echo "The token in this kubeconfig file is good for the k8s default of 1 hour. View the Readme.md for more info."
-echo "You can test the token by running the following command: kubectl --kubeconfig=$HOME/kubeconfig get services -n default"
+echo "You can test the token by running the following command: kubectl --kubeconfig=/home/ubuntu/kubeconfig get namespaces -n kube-system"
