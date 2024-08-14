@@ -67,7 +67,7 @@ or Permissions Needed:
    * Perm1
    * Perm2
 
-Step 1: Login to tenant – create and record get site token: 
+Step 1: Login to XC tenant – create site token: 
 
 #### Multicloud Network Connect -> Manage -> Site Management -> Site Tokens -> Create
 
