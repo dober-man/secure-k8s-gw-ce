@@ -46,6 +46,7 @@ The xc-config-k8s.sh script performs the following tasks:
 * Generates and applies secure configurations for Kubernetes.
 * Validates the generated YAML files to ensure they are well-formatted.
 * Manages ServiceAccount tokens, including generating tokens with extended expiration (default token expiration is 1 hour)
+
 Note: This timeout can be modified by updating the kubeapi manifest. There is a tool in the utils folder to perform this task. After updating the kube api manifest, uncomment lines in the xc-config-k8s.sh to generate a token with a user-defined expiration. 
    
 ## Extract kubeconfig file content for use in XC Console "Service Discovery" definition. 
