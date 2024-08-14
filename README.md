@@ -21,7 +21,7 @@ XC Console - (You will need owner/admin access to a tenant)
 
 ## Install K8s
 1. ssh into ubuntu-k8s server
-2. Copy script into $HOME directory.
+2. Copy k8s-install.sh script into $HOME directory.
 3. Give script exe permissions (chmod +x k8s-install.sh)
 4. Run ./k8s-install.sh
 
@@ -35,7 +35,7 @@ The k8s-install.sh script performs the following tasks:
 * Applies security best practices to the cluster configuration
 
 ## Setup K8s for Service Discovery from XC-CE
-1. Copy script into $HOME directory.
+1. Copy xc-k8s-setup.sh script into $HOME directory.
 2. Give script exe permissions (chmod +x xc-k8s-setup.sh)
 3. Run xc-k8s-setup.sh
 
