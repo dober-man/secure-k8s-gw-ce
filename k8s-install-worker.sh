@@ -85,7 +85,11 @@ echo 'Environment="KUBELET_EXTRA_ARGS=--fail-swap-on=false"' | sudo tee -a /usr/
 # Reload systemd and restart kubelet
 sudo systemctl daemon-reload && sudo systemctl restart kubelet
 
+# Command to run on master node to retrieve join token
+echo "To retrieve the join token, on the master k8s node run: kubeadm token create --print-join-command"
+
 # Prompt for kubeadm join command (you can replace this with an actual join command if you have the token and control-plane IP)
-read -p "Enter the kubeadm join command: " JOIN_COMMAND
+read -p "Enter the kubeadm join command: " sudo JOIN_COMMAND
 $JOIN_COMMAND
+
 

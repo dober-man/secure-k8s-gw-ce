@@ -26,13 +26,15 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-# Set Token Duration 
+###Set Token Duration###
+# Generate User Defined Token 
+
 echo "You are about so set the SA token timemout value. You should have already run the set-token-timeout-util to adjust the kube-apiserver manifest file which had a default value timeout of 1 hour"
 echo "#####################################################"
 read -p "How many hours would you like the service account token to be valid for (up to 720 hours - 30 days) [Default= 24]: " DURATION
 DURATION=${DURATION:-24}
 
-# Generate 1 Hour Token 
+# Generate 1 Hour Token (default)
 # Note this token is good for the default of 1 hour. You can adjust this by running the 
 # token-timeout-utility.sh and defining your timeout parameters in days. 
 #TOKEN=$(kubectl create token $SERVICE_ACCOUNT_NAME -n $NAMESPACE)
