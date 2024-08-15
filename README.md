@@ -153,45 +153,67 @@ Click "Apply"
 
 <img width="1088" alt="image" src="https://github.com/user-attachments/assets/8eee82dc-08d5-469e-986e-fccfeb08fc9b">
 
-<img width="989" alt="image" src="https://github.com/user-attachments/assets/6fca0d15-3e8c-4dc8-8a3c-7a762da246d7">
+Click "Services" to see the full service name. You will need this for your origin pool definition in the next section. 
 
-
-## Other Options not used in this PoC
-
-### VIP Publishing Configuration - this configures the actions taken 
-Disable VIP Publishing Configuration: (Default)
-
-Publish domain to VIP mapping: 
-
-Publish Fully Qualified Domain to VIP mapping: Use this option to publish domain to VIP mapping when all domains are expected to be fully qualified i.e. they include the namespace.
-
-DNS delegation
-Program DNS delegation for a sub-domain in external cluster
-
-## Discovery Cluster Identifier
-No cluster identifier - Default - There is no cluster identifier specified. In this mode all endpoints of the site will discover from this discovery object.
-
-Discovery cluster Identifier
-Specify identifier for discovery cluster. This identifier can be specified in endpoint object to discover only from this discovery object.
+<img width="983" alt="image" src="https://github.com/user-attachments/assets/90273572-c944-43a1-83cf-0054a9b26771">
 
 Step 3: 
 
+## Create Origin Objects
+
+Create Origin Servers and Pool with Discovered Service: 
+
+#### Multicloud App Connect -> Manage -> Load Balancers -> Origin Pools -> Add Origin Pool 
+
+Define the Origin Servers (click Add Item) and use the screenshot to fill in the config. 
+<img width="1206" alt="image" src="https://github.com/user-attachments/assets/8010b034-f8b9-44c3-b6f8-8de6353b6c8b">
+
+Define the Pool Definitions as shown in the screenshot. 
+<img width="885" alt="image" src="https://github.com/user-attachments/assets/e9bfc1ed-2f3c-4e0a-9018-daa19b338122">
+<img width="900" alt="image" src="https://github.com/user-attachments/assets/02710b3b-80cf-4c64-8de3-edb82997b6b4">
+
+
+Note: You must specify port 80 for the origin pool (even though it is technically dynamic at the Node/pod level). Remember all traffic being sent between the XC cloud and CE is natively encrypted so this is all tunneled until the last hop to the pod. In our test scenario it will look like this: User-->80-->VIP-->443-->CE-->80--Origin Pool --> (Nodeport).  
+
+Step 4: 
+
 ## Publish the Service
 
-Create Origin Pool with discovered service: 
-
-#### Multicloud App Connect -> Manage -> Load Balancers -> Origin Pools
-
-<img width="1175" alt="image" src="https://github.com/user-attachments/assets/7d997917-fae5-486b-bc23-a7d47fc0fdf1">
-
-<img width="1159" alt="image" src="https://github.com/user-attachments/assets/56b82090-a620-4415-8786-63ad4d214cc7">
-
-Note: You must specify port 80 for the origin pool (even though it is technically dynamic at the Node/pod level)
-
-Create http load balancer: 
+Create http load balancer:
 
 #### Multicloud App Connect -> Manage -> Load Balancers -> http load balancer
-...add creating LB and testing
+
+Use the screenshot to configure the load balancer: 
+
+<img width="886" alt="image" src="https://github.com/user-attachments/assets/da37c504-5f87-40ee-8725-1ec4024457c0">
+
+
+For the WAF policy - Create a new policy called "blocking-policy", put it in blocking mode and take all defaults
+
+<img width="889" alt="image" src="https://github.com/user-attachments/assets/aca0998a-78ce-40e6-b9de-f9981e3189c3">
+
+For everything below the WAF policy, take all the defaults but note all of the other layered security features can be added.
+
+Click "Save and Exit" 
+
+Click the "Actions buttons" under load balancer name and go to "Manage Configuration".
+<img width="1088" alt="image" src="https://github.com/user-attachments/assets/341f5cd7-29a7-48b0-80a3-21eb77681ee4">
+
+Click the JSON tab and note your IP address. 
+<img width="874" alt="image" src="https://github.com/user-attachments/assets/6c883512-8225-48b0-8cd3-6f4f02c04e8c">
+
+On your local/test machine create a host file entry pointing nginx.example.com to that IP address and test your access to http://nginx.example.com.
+
+<img width="776" alt="image" src="https://github.com/user-attachments/assets/bcfa83a9-0308-4921-9fa8-3e66924c9d73">
+
+
+
+
+
+
+
+
+
 
 
 Other things to test: 
