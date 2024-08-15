@@ -153,11 +153,31 @@ Click "Apply"
 
 <img width="1088" alt="image" src="https://github.com/user-attachments/assets/8eee82dc-08d5-469e-986e-fccfeb08fc9b">
 
-todo: add further description of options
+<img width="572" alt="image" src="https://github.com/user-attachments/assets/9908a08d-745c-45c9-a816-aba341cb8998">
+
+## Other Options not used in this PoC
+
+### VIP Publishing Configuration - this configures the actions taken 
+Disable VIP Publishing Configuration: (Default)
+
+Publish domain to VIP mapping: 
+
+Publish Fully Qualified Domain to VIP mapping: Use this option to publish domain to VIP mapping when all domains are expected to be fully qualified i.e. they include the namespace.
+
+DNS delegation
+Program DNS delegation for a sub-domain in external cluster
+
+## Discovery Cluster Identifier
+No cluster identifier - Default - There is no cluster identifier specified. In this mode all endpoints of the site will discover from this discovery object.
+
+Discovery cluster Identifier
+Specify identifier for discovery cluster. This identifier can be specified in endpoint object to discover only from this discovery object.
+
+Step 3: 
 
 ## Publish the Service
 
-Create Origin Pool: 
+Create Origin Pool with discovered service: 
 
 #### Multicloud App Connect -> Manage -> Load Balancers -> Origin Pools
 
