@@ -9,7 +9,7 @@ The F5 Distributed Cloud (XC) Virtual Edition (VE) Customer Edge (CE) platform c
 
 # Features
 * Automated Installations: The k8s-install.sh script installs a single node Kubernetes cluster with minimal user intervention.
-      * Option to autoinstall a worker node. Deploy a second Ubuntu server and in the $HOME directory run the k8s-install-worker.sh script (in utils folder)
+* Option to Auto-install a worker node. Deploy a second Ubuntu server and in the $HOME directory run the k8s-install-worker.sh script (in utils folder)
 * Security Enhancements: Includes configurations to enhance the security of your Kubernetes setup.
 * Customizable Options: Users can define custom settings for the installations and configurations, ensuring the setup meets their specific requirements.
 
