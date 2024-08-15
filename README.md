@@ -242,5 +242,5 @@ After deploying you will see these services instantly available in XC Console un
 
 <img width="1064" alt="image" src="https://github.com/user-attachments/assets/6c721dbe-009a-4a13-8a87-fb3b3b5fd2a5">
 
-
+You can now configure an origin pool and load balancer to use the new service which could all be automated via the XC API. 
 
