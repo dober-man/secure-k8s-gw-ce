@@ -153,7 +153,8 @@ Click "Apply"
 
 <img width="1088" alt="image" src="https://github.com/user-attachments/assets/8eee82dc-08d5-469e-986e-fccfeb08fc9b">
 
-<img width="572" alt="image" src="https://github.com/user-attachments/assets/9908a08d-745c-45c9-a816-aba341cb8998">
+<img width="989" alt="image" src="https://github.com/user-attachments/assets/6fca0d15-3e8c-4dc8-8a3c-7a762da246d7">
+
 
 ## Other Options not used in this PoC
 
