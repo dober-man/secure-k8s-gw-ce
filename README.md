@@ -2,32 +2,39 @@
 The F5 Distributed Cloud (XC) Virtual Edition (VE) Customer Edge (CE) platform can be deployed within your data center or cloud environment and perform service discovery for services in your Kubernetes (K8s) clusters. The CE uses the kube-apiserver to query for services as they come online. Admins can then reference these discovered services in their XC origin pool definitions and publish them locally through a proxy (http load balancer) on the CE itself or via our Global Application Delivery Network (Regional Edge Deployment). The http load balancer can offer a suite of security services providing an easy to consume layered security model with global redundancy while serving content from private k8's cluster. 
 
 # Overview and Goals 
-1.  Build and configure a Ubuntu server with K8's running simple NGINX web server exposed on NodePort. 
-2.  Configure XC virtual CE for Service Discovery
-3.  Publish and secure service to public
+1.  Build a simple consistent lab environment for PoC or self-education. 
+2.  Configure a Ubuntu 22.04 server with vanilla install of K8s running an example NGINX web service exposed on NodePort. 
+3.  Configure XC Virtual CE for Service Discovery. 
+4.  Secure and publish service globally. 
 
 # Features
-* Automated Installation: The script installs a Kubernetes cluster with minimal user intervention.
+* Automated Installations: The k8s-install.sh script installs a single node Kubernetes cluster with minimal user intervention.
+      * Option to autoinstall a worker node. Deploy a second Ubuntu server and in the $HOME directory run the k8s-install-worker.sh script (in utils folder)
 * Security Enhancements: Includes configurations to enhance the security of your Kubernetes setup.
-* Customizable Options: Users can define custom settings for the installation, ensuring the setup meets their specific requirements.
+* Customizable Options: Users can define custom settings for the installations and configurations, ensuring the setup meets their specific requirements.
 
 ## Prerequisite
 
 ### CPU/RAM/DISK               
-XC virtual CE (RHEL) - 8/32/200
+1 - XC virtual CE (RHEL) - 8/32/200
 
-Ubuntu K8s (Vanilla Install of Ubuntu 22.04) 4/16/100
+1 - Ubuntu K8s master (Vanilla Install of Ubuntu 22.04) 4/16/100
+(optional) 1 - Ubuntu K8s worker (Vanilla Install of Ubuntu 22.04) 4/16/100
+
 
 XC Console - (You will need owner/admin access to a tenant)
-   Permissions Needed: 
-   * Perm1
-   * Perm2
+If you are not owner/admin, a role with these minimum permissions is required: 
+   * Perm1 (clarifying)
+   * Perm2 (clarifying)
+
+# Getting Started
 
 ## Install K8s
 1. ssh into ubuntu-k8s server
 2. Copy k8s-install.sh script into $HOME directory.
 3. Give script exe permissions (chmod +x k8s-install.sh)
 4. Run ./k8s-install.sh
+5. Optionally deploy a worker node and in the $HOME directory run the k8s-install-worker.sh script (in utils folder), then join it to the cluster. 
 
 ### Script Overview
 The k8s-install.sh script performs the following tasks:
@@ -53,7 +60,7 @@ The script will ask how many days you would like the max token timeout to be. Yo
 ### Script Overview
 The xc-config-k8s.sh script performs the following tasks:
 
-* WARNING - currently the SA needs a roll of cluster-admin to perform the service discovery. (ticket open to clarify minimum permissions for SA) - currently using: kubectl create clusterrolebinding debug-binding --clusterrole=cluster-admin --serviceaccount=${NAMESPACE}:${SERVICE_ACCOUNT_NAME} which is overly permissive for the service discovery.
+###  WARNING - currently the Service Account needs a role of cluster-admin to perform the service discovery. (ticket open to clarify minimum permissions for SA) - currently using: kubectl create clusterrolebinding debug-binding --clusterrole=cluster-admin --serviceaccount=${NAMESPACE}:${SERVICE_ACCOUNT_NAME} which is overly permissive for the service discovery.
  
 * Validates and sets up the necessary Kubernetes ServiceAccounts, Roles, and RoleBindings.
 * Generates and applies secure configurations for Kubernetes.
@@ -69,28 +76,39 @@ Note: This is highly sensitive data and should be secured as such.
 You will soon copy/paste this output into XC Console Service Discovery as a blindfolded secret. More info about blindfold here: https://docs.cloud.f5.com/docs/ves-concepts/security#secrets-management-and-blindfold
 
 ## XC Console Prereqs
-(You will need owner level admin access to tenant)
-or Permissions Needed: 
-   * Perm1
-   * Perm2
+You will need owner/admin access to a tenant
+If you are not owner/admin, a role with these minimum permissions is required: 
+   * Perm1 (clarifying)
+   * Perm2 (clarifying)
 
 Step 1: Login to XC tenant – create site token: 
 
 #### Multicloud Network Connect -> Manage -> Site Management -> Site Tokens -> Create
 
-Step 2: Console or Site UI into XC-CE
+Step 2: On your VE CE, use the local Console (cli) or Site UI to configure and register with the XC cloud platform. 
+
+Default Login: 
 
 admin/Volterra123 – change passwd
 
-configure now...
+Configure now...
 
 enter Site Token from previous step
 
 voltstack-combo
 
+Give coordinates as appropriate and apply settings. 
+
 ### XC Console 
+
+Step 1: Login in to XC Cloud Console and accept the CE registration request. 
+
 #### Multicloud Network Connect -> Manage -> Site Management -> Registrations
-Accept
+
+Click Accept on the CE registration request. 
+
+Step 2: Create a Service Discovery.
+
 #### Multicloud App Connect -> Manage -> Service Discovery -> Add Discovery
 
 Name: my-sd
@@ -121,7 +139,7 @@ Policy Type: Built-in
 
 Secret to Blindfold: [this is the content of the $HOME/kubeconfig file that was generated on the host that you ran the xc-config-k8s.sh script.] Copy the contents of the #HOME/kubeconfig file to your clipboard and make sure to not grab any trailing whitespaces or extras. 
 
-Note - make sure to change the server name to IP if the CE can't resolve the hostname in the server definition within the file. 
+Note - make sure to change the server name to IP if the CE can't resolve the hostname in the server definition within the file. In a lab environment without proper dns configured, it most likely can not use the hostname and there is not hostfile configuration capability on the CE itself.
 
 File: 
 
