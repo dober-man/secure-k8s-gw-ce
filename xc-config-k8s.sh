@@ -59,7 +59,7 @@ echo "###############################################"
 #echo "Generated Token: $TOKEN"
 
 # Create a secret
-kubectl create secret generic xc-sa-secret --from-literal=token=$TOKEN --from-file=ca.crt=/etc/kubernetes/pki/ca.crt -n $NAMESPACE
+#kubectl create secret generic xc-sa-secret --from-literal=token=$TOKEN --from-file=ca.crt=/etc/kubernetes/pki/ca.crt -n $NAMESPACE
 
 if [ $? -ne 0 ]; then
   echo "Error: Failed to create secret"

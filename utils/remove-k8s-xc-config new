@@ -1,0 +1,50 @@
+#!/bin/bash
+# Cleanup script to remove resources created by the service discovery setup script
+
+# Variables
+ROLE_NAME=service-discovery-role
+ROLE_BINDING_NAME=service-discovery-binding
+KUBECONFIG_FILE=./kubeconfig
+KUBE_SYSTEM_NAMESPACE="kube-system"
+
+# User Defined Variables with Default Values
+read -p "Enter the Namespace [Default= default]: " NAMESPACE
+NAMESPACE=${NAMESPACE:-default}
+
+read -p "Enter the Service Account Name [Default= xc-sa]: " SERVICE_ACCOUNT_NAME
+SERVICE_ACCOUNT_NAME=${SERVICE_ACCOUNT_NAME:-xc-sa}
+
+# Delete ClusterRoleBinding for Cluster Admin privileges (for testing)
+echo "Removing ClusterRoleBinding for cluster-admin privileges..."
+kubectl delete clusterrolebinding debug-binding
+
+# Delete ClusterRoleBinding for Service Discovery
+echo "Removing ClusterRoleBinding for service discovery..."
+kubectl delete clusterrolebinding ${ROLE_NAME}-binding
+
+# Delete ClusterRole for Service Discovery
+echo "Removing ClusterRole for service discovery..."
+kubectl delete clusterrole $ROLE_NAME
+
+# Delete the Secret associated with the ServiceAccount
+#echo "Removing the secret associated with the ServiceAccount..."
+#kubectl delete secret xc-sa-secret -n $NAMESPACE
+
+# Delete the ServiceAccount
+echo "Removing the ServiceAccount..."
+kubectl delete serviceaccount $SERVICE_ACCOUNT_NAME -n $NAMESPACE
+
+# Delete the generated kubeconfig file
+echo "Removing the kubeconfig file..."
+rm -f $KUBECONFIG_FILE
+
+# Optionally, remove yq if it was installed by the original script
+read -p "Do you want to remove yq from the system? (yes/no) [Default= no]: " REMOVE_YQ
+REMOVE_YQ=${REMOVE_YQ:-no}
+
+if [ "$REMOVE_YQ" = "yes" ]; then
+  echo "Removing yq..."
+  sudo rm -f /usr/bin/yq
+fi
+
+echo "Cleanup complete."

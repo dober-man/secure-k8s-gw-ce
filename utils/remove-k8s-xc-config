@@ -9,6 +9,7 @@ ROLE_BINDING_NAME=service-discovery-binding
 # Step 1: Delete the RoleBinding
 echo "Deleting RoleBinding: $ROLE_BINDING_NAME in namespace: $NAMESPACE"
 kubectl delete rolebinding $ROLE_BINDING_NAME -n $NAMESPACE
+kubectl delete clusterrolebinding debug-binding
 
 # Step 2: Delete the Role
 echo "Deleting Role: $ROLE_NAME in namespace: $NAMESPACE"
