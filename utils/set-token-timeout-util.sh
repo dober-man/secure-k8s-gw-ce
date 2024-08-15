@@ -1,4 +1,16 @@
 #!/bin/bash
+# This server modifies the API server manifest to change the default k8s token timeout from 1 hour to a user-defined length of days. 
+
+# Prompt user to modify the default k8s token timeout
+read -p "Do you want to modify the default k8s token timeout of 1 hour? (y/n) [default: n]: " MODIFY_TIMEOUT
+MODIFY_TIMEOUT=${MODIFY_TIMEOUT:-n}
+
+# If the user chooses not to modify, exit the script
+if [[ "$MODIFY_TIMEOUT" =~ ^[Nn]$ ]]; then
+    echo "Leaving the default token timeout of 1 hour unchanged."
+    exit 0
+fi
+# Continue with the script if the user chooses to modify the timeout
 
 # Prompt user for Service Account Name with a default value
 read -p "Enter the Service Account Name [default: xc-sa]: " SERVICE_ACCOUNT_NAME
@@ -47,3 +59,4 @@ systemctl restart kubelet
 
 #Check that the values were changed
 echo "To verify run: sudo grep -- '--service-account-max-token-expiration=' /etc/kubernetes/manifests/kube-apiserver.yaml"
+echo "Make sure to turn modify the xc-config-k8s.sh script to define a duration when generating the token for XC. 
