@@ -207,13 +207,10 @@ On your local/test machine create a host file entry pointing nginx.example.com t
 <img width="776" alt="image" src="https://github.com/user-attachments/assets/bcfa83a9-0308-4921-9fa8-3e66924c9d73">
 
 
+## Verify the WAF
+run http://nginx.example.com/<script>
 
-
-
-
-
-
-
+<img width="673" alt="image" src="https://github.com/user-attachments/assets/c6fad06f-be4e-4bd2-8742-b45cb989130f">
 
 
 Other things to test: 
