@@ -49,13 +49,14 @@ Note: This lab is built using Service Account Auth but User Auth is also support
 
 <img width="424" alt="image" src="https://github.com/user-attachments/assets/a46b2d33-6a24-411e-8217-b5cd15e8e12e">
 
+
 <img width="433" alt="image" src="https://github.com/user-attachments/assets/855efbdb-e62b-45ff-8baf-05d6a15b5990">
 
 ## Service Account Token Timeout Considerations. 
-By default k8s will generate tokens that have a max-life of 1 hour. You can adjust this default behavior by modifying the kube-apiserver manifest. 
+By default k8s will generate tokens that have a max-life of 1 hour which should be enough to get through the end of this lab. If you are setting this lab up to persist more than 1 hour you may want a lengthier token timeout. You can adjust this default behavior by modifying the kube-apiserver manifest. 
 The set-token-timeout-util.sh script in the utils folder of this repo can do this for you. To use the script, download it to your $HOME directory and give it permissions to execute (chmod +x set-token-timeout-util.sh)
 
-The script will ask how many days you would like the max token timeout to be. You are not generating a token yet....just configuring the mainfest to allow for lengthier token expiration dates for future tokens. In the next step when you run the xc-config-k8s.sh script, a token will ge generated for you and this will ultimately be in the kubeconfig file that is used between the CE and the kube-apiserver for service discovery. This token should be rotated periodically. 
+The script will ask how many days you would like the max token timeout to be. You are not generating a token yet....just configuring the mainfest to allow for lengthier token expiration dates for future tokens. In the next step when you run the xc-config-k8s.sh script, a token will be generated for you and this will ultimately be part of the authentication that is contained in the kubeconfig file used between the CE and the kube-apiserver for Service Discovery. This token should be rotated periodically. If you do choose the 1hr and it times out, you can run the remove-k8s-xc-config.sh script  in the utils folder of this repo from the $HOME directory and re-run the xc-k8s-setup.sh as shown below: 
 
 ## Setup K8s for Service Discovery from XC-CE
 1. Copy xc-k8s-setup.sh script into $HOME directory.
@@ -66,7 +67,7 @@ The script will ask how many days you would like the max token timeout to be. Yo
 ### Script Overview
 The xc-config-k8s.sh script performs the following tasks:
 
-###  WARNING - currently the Service Account needs a role of cluster-admin to perform the service discovery. (ticket open to clarify minimum permissions for SA) - currently using: kubectl create clusterrolebinding debug-binding --clusterrole=cluster-admin --serviceaccount=${NAMESPACE}:${SERVICE_ACCOUNT_NAME} which is overly permissive for the service discovery.
+###  WARNING - currently 8/15/24 - the Service Account needs a role of cluster-admin to perform the service discovery. (ticket open to clarify minimum permissions for SA) - currently using: kubectl create clusterrolebinding debug-binding --clusterrole=cluster-admin --serviceaccount=${NAMESPACE}:${SERVICE_ACCOUNT_NAME} which is overly permissive for the service discovery.
  
 * Validates and sets up the necessary Kubernetes ServiceAccounts, Roles, and RoleBindings.
 * Generates and applies secure configurations for Kubernetes.
@@ -212,16 +213,34 @@ On your local/test machine create a host file entry pointing nginx.example.com t
 
 <img width="776" alt="image" src="https://github.com/user-attachments/assets/bcfa83a9-0308-4921-9fa8-3e66924c9d73">
 
-
 ## Verify the WAF
 run http://nginx.example.com/<script>
 
 <img width="673" alt="image" src="https://github.com/user-attachments/assets/c6fad06f-be4e-4bd2-8742-b45cb989130f">
 
+## More Info on Traffic Routing in a Kubernetes-Aware Load Balancer:
 
-Other things to test: 
-add second k8s node in cluster 
-scale service
-reboot master..test
+### Service Resolution:
 
-multiple services 
+The CE queries the Kubernetes API to resolve the nginx.default service. The service maps to a set of pod IPs (the backend pods that are part of the nginx deployment).
+
+### Load Balancer Traffic Distribution:
+
+The load balancer points to the CE which sends traffic directly to the nodes where the nginx pods are running. The CE will send traffic directly to the worker nodes that are running the nginx pods.
+
+The NodePort service type means that each node in the cluster will expose the nginx service on a specific port (e.g., 32174). The CE uses this information to send traffic to the correct port on the correct nodes.
+
+### Direct Node Access:
+
+The CE distributes traffic across all nodes in the cluster that have the nginx pods running. It balances traffic between these nodes based on the IP addresses and the specific NodePort.
+
+## Adding a second service
+
+On the master K8s server, create and run the script found in the utils folder called: k8s-add-2nd-service.sh. This will creaet a scaled deployment with the   echoserver image. 
+
+After deploying you will see these services instantly available in XC Console under "Service Discovery".
+
+<img width="1064" alt="image" src="https://github.com/user-attachments/assets/6c721dbe-009a-4a13-8a87-fb3b3b5fd2a5">
+
+
+
