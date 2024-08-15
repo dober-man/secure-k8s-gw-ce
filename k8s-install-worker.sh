@@ -2,10 +2,13 @@
 
 # User-defined variables
 HOSTNAME="worker-node"
-read -p "Enter the IP address for this node: " IP_ADDRESS
+read -p "Enter the IP address for this node: " IP_ADDRESS1
+
+read -p "Enter the IP address for the master node: " IP_ADDRESS2
 
 # Set Host File
-echo "$IP_ADDRESS worker-node" | sudo tee -a /etc/hosts 
+echo "$IP_ADDRESS1 worker-node" | sudo tee -a /etc/hosts 
+echo "$IP_ADDRESS2 master-node" | sudo tee -a /etc/hosts 
 
 # Update and install Docker
 sudo apt update

@@ -27,6 +27,7 @@ sudo apt install kubeadm kubelet kubectl -y
 sudo apt-mark hold kubeadm kubelet kubectl
 
 # Disable swap
+sudo swapoff -a
 sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
 # Load necessary kernel modules
@@ -109,3 +110,5 @@ kubectl get svc
 
 # Check the pods
 kubectl get pods
+
+
