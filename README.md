@@ -153,3 +153,11 @@ Create http load balancer:
 
 #### Multicloud App Connect -> Manage -> Load Balancers -> http load balancer
 ...add creating LB and testing
+
+
+Other things to test: 
+add second k8s node in cluster 
+scale service
+reboot master..test
+
+multiple services 
