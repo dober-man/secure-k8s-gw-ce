@@ -102,7 +102,7 @@ kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
 kubectl get nodes
 
 # Create a deployment and expose it
-kubectl create deployment nginx --image=nginx
+kubectl create deployment nginx --image=nginxdemos/hello
 kubectl expose deployment nginx --port=80 --target-port=80 --type=NodePort
 
 # Check the service
