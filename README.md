@@ -45,6 +45,12 @@ The k8s-install.sh script performs the following tasks:
 * Initializes the Kubernetes cluster
 * Applies security best practices to the cluster configuration
 
+Note: This lab is built using Service Account Auth but User Auth is also supported as shown in the diagram but outside the scope of this lab. 
+
+<img width="424" alt="image" src="https://github.com/user-attachments/assets/a46b2d33-6a24-411e-8217-b5cd15e8e12e">
+
+<img width="433" alt="image" src="https://github.com/user-attachments/assets/855efbdb-e62b-45ff-8baf-05d6a15b5990">
+
 ## Service Account Token Timeout Considerations. 
 By default k8s will generate tokens that have a max-life of 1 hour. You can adjust this default behavior by modifying the kube-apiserver manifest. 
 The set-token-timeout-util.sh script in the utils folder of this repo can do this for you. To use the script, download it to your $HOME directory and give it permissions to execute (chmod +x set-token-timeout-util.sh)
