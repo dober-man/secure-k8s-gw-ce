@@ -247,3 +247,8 @@ After deploying you will see these services instantly available in XC Console un
 
 You can now configure an origin pool and load balancer to use the new service which could all be automated via the XC API. 
 
+## Other Enhancements
+
+Service Discovery is meant to discover objects and not create objects for further consumption. In this default setup once services are discovered it is up to the admin to now create an origin pool with reference to the discovered services and ultimately a load balancer in front of the origin pool. My colleague developed a script called "originsync" that could enhance any service discovery architecture by automatically creating the origin pools based on the services discovered. https://github.com/Mikej81/originsynchttps://github.com/Mikej81/originsync
+
+
