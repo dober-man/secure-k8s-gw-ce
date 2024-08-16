@@ -45,10 +45,12 @@ The k8s-install.sh script performs the following tasks:
 * Initializes the Kubernetes cluster
 * Applies security best practices to the cluster configuration
 
-Note: This lab is built using Service Account Auth but User Auth is also supported as shown in the diagram but outside the scope of this lab. 
+Note: Service discovery supports two types of auth; User or Service Account. This lab is built using Service Account Auth as the example. 
 
 <img width="424" alt="image" src="https://github.com/user-attachments/assets/a46b2d33-6a24-411e-8217-b5cd15e8e12e">
+<br>
 
+Also supported but not covered in this lab. More info here: https://community.f5.com/kb/technicalarticles/using-a-kubernetes-serviceaccount-for-service-discovery-with-f5-distributed-clou/300225
 
 <img width="433" alt="image" src="https://github.com/user-attachments/assets/855efbdb-e62b-45ff-8baf-05d6a15b5990">
 
