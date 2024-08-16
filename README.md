@@ -239,7 +239,7 @@ The CE distributes traffic across all nodes in the cluster that have the nginx p
 
 ## Adding a second service
 
-On the master K8s server, create and run the script found in the utils folder called: k8s-add-2nd-service.sh. This will creaet a scaled deployment with the   echoserver image. 
+On the master K8s server, create and run the script found in the utils folder called: k8s-add-2nd-service.sh. This will create a scaled deployment with the   echoserver image. 
 
 After deploying you will see these services instantly available in XC Console under "Service Discovery".
 
