@@ -251,6 +251,6 @@ You can now configure an origin pool and load balancer to use the new service wh
 
 ## Other Enhancements
 
-Service Discovery is meant to discover objects and not create objects for further consumption. In this default setup once services are discovered it is up to the admin to now create an origin pool with reference to the discovered services and ultimately a load balancer in front of the origin pool. My colleague developed a script called "originsync" that could enhance any service discovery architecture by automatically creating the origin pools based on the services discovered. https://github.com/Mikej81/originsynchttps://github.com/Mikej81/originsync
+Service Discovery is meant to discover objects and not "create" objects for further consumption. Once services are discovered, it is up to the admin to create an origin pool with reference to the discovered services and ultimately a load balancer in front of the origin pool. My colleague developed a solution called "originsync" that could enhance any service discovery architecture by automatically creating the origin pools in XC based on the services discovered. Cool stuff! https://github.com/Mikej81/originsynchttps://github.com/Mikej81/originsync
 
 
