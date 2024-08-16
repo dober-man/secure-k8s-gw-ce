@@ -1,5 +1,5 @@
 # Why Service Discovery with a CE? 
-The F5 Distributed Cloud (XC) Virtual Edition (VE) Customer Edge (CE) platform can be deployed within your data center or cloud environment and perform service discovery for services in your Kubernetes (K8s) clusters. The CE uses the kube-apiserver to query for services as they come online. Admins can then reference these discovered services in their XC origin pool definitions and publish them locally through a proxy (http load balancer) on the CE itself or via our Global Application Delivery Network (Regional Edge Deployment). The http load balancer can offer a suite of security services providing an easy to consume layered security model with global redundancy while serving content from private k8's cluster. 
+The F5 Distributed Cloud (XC) Virtual Edition (VE) Customer Edge (CE) platform can be deployed within your data center or cloud environment and perform service discovery for services in your Kubernetes (K8s) clusters. The CE uses the kube-apiserver to query for services as they come online. Admins can then reference these discovered services in their XC origin pool definitions and publish them locally through a proxy (http load balancer) on the CE itself or via our Global Application Delivery Network (Regional Edge Deployment). The http load balancer can offer a suite of security services providing an easy to consume layered security model with global redundancy while serving content from private K8's clusters. 
 
 # Overview and Goals 
 1.  Build a simple consistent lab environment for PoC or self-education. 
@@ -54,9 +54,12 @@ Note: This lab is built using Service Account Auth but User Auth is also support
 
 ## Service Account Token Timeout Considerations. 
 By default k8s will generate tokens that have a max-life of 1 hour which should be enough to get through the end of this lab. If you are setting this lab up to persist more than 1 hour you may want a lengthier token timeout. You can adjust this default behavior by modifying the kube-apiserver manifest. 
+
 The set-token-timeout-util.sh script in the utils folder of this repo can do this for you. To use the script, download it to your $HOME directory and give it permissions to execute (chmod +x set-token-timeout-util.sh)
 
-The script will ask how many days you would like the max token timeout to be. You are not generating a token yet....just configuring the mainfest to allow for lengthier token expiration dates for future tokens. In the next step when you run the xc-config-k8s.sh script, a token will be generated for you and this will ultimately be part of the authentication that is contained in the kubeconfig file used between the CE and the kube-apiserver for Service Discovery. This token should be rotated periodically. If you do choose the 1hr and it times out, you can run the remove-k8s-xc-config.sh script  in the utils folder of this repo from the $HOME directory and re-run the xc-k8s-setup.sh as shown below: 
+The script will ask how many days you would like the max token timeout to be. You are not generating a token yet....just configuring the mainfest to allow for lengthier token expiration dates for future tokens. In the next step when you run the xc-config-k8s.sh script, a token will be generated for you and this will ultimately be part of the authentication that is contained in the kubeconfig file used between the CE and the kube-apiserver for Service Discovery. 
+
+This token should be rotated periodically. If you do choose the 1 hour and it times out, you can run the remove-k8s-xc-config.sh script in the utils folder of this repo from the $HOME directory and re-run the xc-k8s-setup.sh as shown below: 
 
 ## Setup K8s for Service Discovery from XC-CE
 1. Copy xc-k8s-setup.sh script into $HOME directory.
