@@ -50,7 +50,7 @@ Note: Service discovery supports two types of auth; User or Service Account. Thi
 <img width="424" alt="image" src="https://github.com/user-attachments/assets/a46b2d33-6a24-411e-8217-b5cd15e8e12e">
 <br>
 
-Also supported but not covered in this lab. More info here: https://community.f5.com/kb/technicalarticles/using-a-kubernetes-serviceaccount-for-service-discovery-with-f5-distributed-clou/300225
+User Auth (3rd party) is also supported but not covered in this lab. More info here: https://community.f5.com/kb/technicalarticles/using-a-kubernetes-serviceaccount-for-service-discovery-with-f5-distributed-clou/300225
 
 <img width="433" alt="image" src="https://github.com/user-attachments/assets/855efbdb-e62b-45ff-8baf-05d6a15b5990">
 
