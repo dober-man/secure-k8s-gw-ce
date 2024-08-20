@@ -22,6 +22,7 @@ The F5 XC Load Balancer offers an entire suite of security services providing an
 1 - XC virtual CE (RHEL) - 8/32/200
 
 1 - Ubuntu K8s master (Vanilla Install of Ubuntu 22.04) 4/16/100
+<br>
 (optional) 1 - Ubuntu K8s worker (Vanilla Install of Ubuntu 22.04) 4/16/100
 
 
