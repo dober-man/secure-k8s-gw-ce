@@ -48,7 +48,7 @@ The k8s-install.sh script performs the following tasks:
 * Configures networking and security settings
 * Initializes the Kubernetes cluster
 
-Note: Service discovery supports two types of auth; User or Service Account. This lab is built using Service Account Auth as the example. 
+Note: Service discovery supports two types of auth; User or Service Account. This lab is built using Service Account Auth.
 
 <img width="424" alt="image" src="https://github.com/user-attachments/assets/a46b2d33-6a24-411e-8217-b5cd15e8e12e">
 <br>
@@ -58,11 +58,11 @@ User Auth (3rd party) is also supported but not covered in this lab. More info h
 <img width="433" alt="image" src="https://github.com/user-attachments/assets/855efbdb-e62b-45ff-8baf-05d6a15b5990">
 
 ## Service Account Token Timeout Considerations. 
-By default k8s will generate tokens that have a max-life of 1 hour which should be enough to get through the end of this lab. If you are setting this lab up to persist more than 1 hour you may want a lengthier token timeout. You can adjust this default behavior by modifying the kube-apiserver manifest. 
+By default K8s will generate tokens that have a max-life of 1 hour which should be enough to get through the end of this lab. If you are setting this lab up to persist more than 1 hour you may want a lengthier token timeout. You can adjust this default behavior by modifying the kube-apiserver manifest. 
 
 The set-token-timeout-util.sh script in the utils folder of this repo can do this for you. To use the script, download it to your $HOME directory and give it permissions to execute (chmod +x set-token-timeout-util.sh)
 
-The script will ask how many days you would like the max token timeout to be. You are not generating a token yet....just configuring the mainfest to allow for lengthier token expiration dates for future tokens. In the next step when you run the xc-config-k8s.sh script, a token will be generated for you and this will ultimately be part of the authentication that is contained in the kubeconfig file used between the CE and the kube-apiserver for Service Discovery. 
+The script will ask how many days you would like the max token timeout to be. You are not generating a token yet....just configuring the mainfest to allow for lengthier token expiration dates for future tokens. In the next step, when you run the xc-config-k8s.sh script, a token will be generated for you. This token will ultimately be part of the authentication in the kubeconfig file used between the CE and the kube-apiserver for Service Discovery. 
 
 This token should be rotated periodically. If you do choose the 1 hour and it times out, you can run the remove-k8s-xc-config.sh script in the utils folder of this repo from the $HOME directory and re-run the xc-k8s-setup.sh as shown below: 
 
@@ -85,7 +85,7 @@ The xc-config-k8s.sh script performs the following tasks:
 1. In $HOME directory run: cat kubeconfig
 
 Note: The file content will contain a "server" definition pointing to whatever server hostname you used when deploying the script initially. (This may need to be changed to an ip address when importing the kubeconfig to XC service discovery definition if the CE is not able to resolve the server name configured)
-<br>
+
 Note: This is highly sensitive data and should be secured as such. 
 You will soon copy/paste this output into XC Console Service Discovery as a blindfolded secret. More info about blindfold here: https://docs.cloud.f5.com/docs/ves-concepts/security#secrets-management-and-blindfold
 
