@@ -1,5 +1,7 @@
 # Why Service Discovery with a CE? 
-The F5 Distributed Cloud (XC) Virtual Edition (VE) Customer Edge (CE) platform can be deployed within your data center or cloud environment and perform service discovery for services in your Kubernetes (K8s) clusters. The CE uses the kube-apiserver to query for services as they come online. Admins can then reference these discovered services in their XC origin pool definitions and publish them locally through a proxy (http load balancer) on the CE itself or via our Global Application Delivery Network (Regional Edge Deployment). The http load balancer can offer a suite of security services providing an easy to consume layered security model with global redundancy while serving content from private K8's clusters. 
+The F5 Distributed Cloud (XC) Virtual Edition (VE) Customer Edge (CE) platform can be deployed within your data center or cloud environment and perform service discovery for services in your Kubernetes (K8s) clusters. 
+<br>
+The CE can use the native kube-apiserver, or Consul, to query for services as they come online. Admins can then reference these discovered services in their XC origin pool definitions and publish them locally through a proxy (http load balancer) on the CE itself or via our Global Application Delivery Network (Regional Edge Deployment). The http load balancer can offer a suite of security services providing an easy to consume and globally redundant layered security model while serving content from private K8's clusters. 
 
 # Overview and Goals 
 1.  Build a simple consistent lab environment for PoC or self-education. 
@@ -10,7 +12,6 @@ The F5 Distributed Cloud (XC) Virtual Edition (VE) Customer Edge (CE) platform c
 # Features
 * Automated Installations: The k8s-install.sh script installs a single node Kubernetes cluster with minimal user intervention.
 * Option to Auto-install a worker node. Deploy a second Ubuntu server and in the $HOME directory run the k8s-install-worker.sh script (in utils folder)
-* Security Enhancements: Includes configurations to enhance the security of your Kubernetes setup.
 * Customizable Options: Users can define custom settings for the installations and configurations, ensuring the setup meets their specific requirements.
 
 ## Prerequisite
@@ -43,7 +44,6 @@ The k8s-install.sh script performs the following tasks:
 * Sets up Kubernetes components (e.g., kubeadm, kubelet, kubectl)
 * Configures networking and security settings
 * Initializes the Kubernetes cluster
-* Applies security best practices to the cluster configuration
 
 Note: Service discovery supports two types of auth; User or Service Account. This lab is built using Service Account Auth as the example. 
 
@@ -56,13 +56,13 @@ User Auth (3rd party) is also supported but not covered in this lab. More info h
 
 ## Service Account Token Timeout Considerations. 
 By default k8s will generate tokens that have a max-life of 1 hour which should be enough to get through the end of this lab. If you are setting this lab up to persist more than 1 hour you may want a lengthier token timeout. You can adjust this default behavior by modifying the kube-apiserver manifest. 
-
+<br>
 The set-token-timeout-util.sh script in the utils folder of this repo can do this for you. To use the script, download it to your $HOME directory and give it permissions to execute (chmod +x set-token-timeout-util.sh)
-
+<br>
 The script will ask how many days you would like the max token timeout to be. You are not generating a token yet....just configuring the mainfest to allow for lengthier token expiration dates for future tokens. In the next step when you run the xc-config-k8s.sh script, a token will be generated for you and this will ultimately be part of the authentication that is contained in the kubeconfig file used between the CE and the kube-apiserver for Service Discovery. 
-
+<br>
 This token should be rotated periodically. If you do choose the 1 hour and it times out, you can run the remove-k8s-xc-config.sh script in the utils folder of this repo from the $HOME directory and re-run the xc-k8s-setup.sh as shown below: 
-
+<br>
 ## Setup K8s for Service Discovery from XC-CE
 1. Copy xc-k8s-setup.sh script into $HOME directory.
 2. Modify the section under "###Set Token Duration###" per your configuration. You can choose 1hr (default) or user defined. 
@@ -75,7 +75,6 @@ The xc-config-k8s.sh script performs the following tasks:
 ###  WARNING - currently 8/15/24 - the Service Account needs a role of cluster-admin to perform the service discovery. (ticket open to clarify minimum permissions for SA) - currently using: kubectl create clusterrolebinding debug-binding --clusterrole=cluster-admin --serviceaccount=${NAMESPACE}:${SERVICE_ACCOUNT_NAME} which is overly permissive for the service discovery.
  
 * Validates and sets up the necessary Kubernetes ServiceAccounts, Roles, and RoleBindings.
-* Generates and applies secure configurations for Kubernetes.
 * Validates the generated YAML files to ensure they are well-formatted.
 * Manages ServiceAccount tokens, including generating tokens with extended expiration (default token expiration is 1 hour)
  
@@ -83,7 +82,7 @@ The xc-config-k8s.sh script performs the following tasks:
 1. In $HOME directory run: cat kubeconfig
 
 Note: The file content will contain a "server" definition pointing to whatever server hostname you used when deploying the script initially. (This may need to be changed to an ip address when importing the kubeconfig to XC service discovery definition if the CE is not able to resolve the server name configured)
-
+<br>
 Note: This is highly sensitive data and should be secured as such. 
 You will soon copy/paste this output into XC Console Service Discovery as a blindfolded secret. More info about blindfold here: https://docs.cloud.f5.com/docs/ves-concepts/security#secrets-management-and-blindfold
 
@@ -150,7 +149,7 @@ Action: Blindfold New Secret
 Policy Type: Built-in
 
 Secret to Blindfold: [this is the content of the $HOME/kubeconfig file that was generated on the host that you ran the xc-config-k8s.sh script.] Copy the contents of the #HOME/kubeconfig file to your clipboard and make sure to not grab any trailing whitespaces or extras. 
-
+<br>
 Note - make sure to change the server name to IP if the CE can't resolve the hostname in the server definition within the file. In a lab environment without proper dns configured, it most likely can not use the hostname and there is not hostfile configuration capability on the CE itself.
 
 File: 
@@ -232,7 +231,7 @@ The CE queries the Kubernetes API to resolve the nginx.default service. The serv
 ### Load Balancer Traffic Distribution:
 
 The load balancer points to the CE which sends traffic directly to the nodes where the nginx pods are running. The CE will send traffic directly to the worker nodes that are running the nginx pods.
-
+<br>
 The NodePort service type means that each node in the cluster will expose the nginx service on a specific port (e.g., 32174). The CE uses this information to send traffic to the correct port on the correct nodes.
 
 ### Direct Node Access:
@@ -242,7 +241,7 @@ The CE distributes traffic across all nodes in the cluster that have the nginx p
 ## Adding a second service
 
 On the master K8s server, create and run the script found in the utils folder called: k8s-add-2nd-service.sh. This will create a scaled deployment with the   echoserver image. 
-
+<br>
 After deploying you will see these services instantly available in XC Console under "Service Discovery".
 
 <img width="1064" alt="image" src="https://github.com/user-attachments/assets/6c721dbe-009a-4a13-8a87-fb3b3b5fd2a5">
@@ -251,6 +250,8 @@ You can now configure an origin pool and load balancer to use the new service wh
 
 ## Other Enhancements
 
-Service Discovery is meant to discover objects and not "create" objects for further consumption. Once services are discovered, it is up to the admin to create an origin pool with reference to the discovered services and ultimately a load balancer in front of the origin pool. My colleague developed a solution called "originsync" that could enhance any service discovery architecture by automatically creating the origin pools in XC based on the services discovered. Cool stuff! https://github.com/Mikej81/originsynchttps://github.com/Mikej81/originsync
+Service Discovery is meant to "discover" objects and not "create" objects for further consumption. Once services are discovered, it is up to the admin to create an origin pool with reference to the discovered services and ultimately a load balancer in front of the origin pool. This could all be part of a CI/CD pipeline. 
+colleague
+My colleague developed a solution called "originsync" that could enhance any service discovery architecture by automatically creating the origin pools in XC based on the services discovered. Cool stuff! https://github.com/Mikej81/originsynchttps://github.com/Mikej81/originsync
 
 
