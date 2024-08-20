@@ -3,7 +3,7 @@ The F5 Distributed Cloud (XC) Virtual Edition (VE) Customer Edge (CE) platform c
 
 The CE can use the native kube-apiserver, or Consul, to query for services as they come online. Admins can then reference these discovered services in their XC origin pool definitions and publish them locally through a proxy (http load balancer) on the CE itself or via our Global Application Delivery Network (Regional Edge Deployment). 
 
-The http load balancer can offer a suite of security services providing an easy to consume and globally redundant layered security model while serving content from private K8's clusters. 
+The F5 XC Load Balancer offers an entire suite of security services providing an easy to consume and globally redundant layered security model while serving content from private K8's clusters. 
 
 # Overview and Goals 
 1.  Build a simple consistent lab environment for PoC or self-education. 
