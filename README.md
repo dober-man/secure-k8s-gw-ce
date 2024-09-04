@@ -84,9 +84,9 @@ The xc-config-k8s.sh script performs the following tasks:
 ## Extract kubeconfig file content for use in XC Console "Service Discovery" definition. 
 1. In $HOME directory run: cat kubeconfig
 
-**_NOTE:_**: The file content will contain a "server" definition pointing to whatever server hostname you used when deploying the script initially. (This may need to be changed to an ip address when importing the kubeconfig to XC service discovery definition if the CE is not able to resolve the server name configured)
+**_NOTE:_** The file content will contain a "server" definition pointing to whatever server hostname you used when deploying the script initially. (This may need to be changed to an ip address when importing the kubeconfig to XC service discovery definition if the CE is not able to resolve the server name configured)
 
-**_NOTE:_**: This is highly sensitive data and should be secured as such. 
+**_NOTE:_** This is highly sensitive data and should be secured as such. 
 You will soon copy/paste this output into XC Console Service Discovery as a blindfolded secret. More info about blindfold here: https://docs.cloud.f5.com/docs/ves-concepts/security#secrets-management-and-blindfold
 
 ## XC Console Prereqs
