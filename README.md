@@ -151,7 +151,7 @@ Action: Blindfold New Secret
 
 Policy Type: Built-in
 
-Secret to Blindfold: [this is the content of the $HOME/kubeconfig file that was generated on the host that you ran the xc-config-k8s.sh script.] Copy the contents of the #HOME/kubeconfig file to your clipboard and make sure to not grab any trailing whitespaces or extras. 
+Secret to Blindfold: [this is the content of the $HOME/kubeconfig file that was generated on the host that you ran the xc-config-k8s.sh script.] Copy the contents of the $HOME/kubeconfig file to your clipboard and make sure to not grab any trailing whitespaces or extras. 
 <br>
 <br>
 **_NOTE:_** make sure to change the server name to IP if the CE can't resolve the hostname in the server definition within the file. In a lab environment without proper dns configured, it most likely can not use the hostname and there is not hostfile configuration capability on the CE itself.
