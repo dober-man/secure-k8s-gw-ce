@@ -48,7 +48,7 @@ The k8s-install.sh script performs the following tasks:
 * Configures networking and security settings
 * Initializes the Kubernetes cluster
 
-Note: Service discovery supports two types of auth; User or Service Account. This lab is built using Service Account Auth.
+**_NOTE:_**  Service discovery supports two types of auth; User or Service Account. This lab is built using Service Account Auth.
 
 <img width="424" alt="image" src="https://github.com/user-attachments/assets/a46b2d33-6a24-411e-8217-b5cd15e8e12e">
 <br>
