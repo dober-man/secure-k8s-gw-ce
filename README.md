@@ -48,7 +48,7 @@ The k8s-install.sh script performs the following tasks:
 * Configures networking and security settings
 * Initializes the Kubernetes cluster
 
-**_NOTE:_**  Service discovery supports two types of auth; User or Service Account. This lab is built using Service Account Auth.
+**_**_**_NOTE:_**:_**:_**  Service discovery supports two types of auth; User or Service Account. This lab is built using Service Account Auth.
 
 <img width="424" alt="image" src="https://github.com/user-attachments/assets/a46b2d33-6a24-411e-8217-b5cd15e8e12e">
 <br>
@@ -84,9 +84,9 @@ The xc-config-k8s.sh script performs the following tasks:
 ## Extract kubeconfig file content for use in XC Console "Service Discovery" definition. 
 1. In $HOME directory run: cat kubeconfig
 
-Note: The file content will contain a "server" definition pointing to whatever server hostname you used when deploying the script initially. (This may need to be changed to an ip address when importing the kubeconfig to XC service discovery definition if the CE is not able to resolve the server name configured)
+**_**_NOTE:_**:_**: The file content will contain a "server" definition pointing to whatever server hostname you used when deploying the script initially. (This may need to be changed to an ip address when importing the kubeconfig to XC service discovery definition if the CE is not able to resolve the server name configured)
 
-Note: This is highly sensitive data and should be secured as such. 
+**_**_NOTE:_**:_**: This is highly sensitive data and should be secured as such. 
 You will soon copy/paste this output into XC Console Service Discovery as a blindfolded secret. More info about blindfold here: https://docs.cloud.f5.com/docs/ves-concepts/security#secrets-management-and-blindfold
 
 ## XC Console Prereqs
@@ -153,7 +153,7 @@ Policy Type: Built-in
 
 Secret to Blindfold: [this is the content of the $HOME/kubeconfig file that was generated on the host that you ran the xc-config-k8s.sh script.] Copy the contents of the #HOME/kubeconfig file to your clipboard and make sure to not grab any trailing whitespaces or extras. 
 <br>
-Note - make sure to change the server name to IP if the CE can't resolve the hostname in the server definition within the file. In a lab environment without proper dns configured, it most likely can not use the hostname and there is not hostfile configuration capability on the CE itself.
+**_NOTE:_**- make sure to change the server name to IP if the CE can't resolve the hostname in the server definition within the file. In a lab environment without proper dns configured, it most likely can not use the hostname and there is not hostfile configuration capability on the CE itself.
 
 File: 
 
@@ -187,7 +187,7 @@ Define the Pool Definitions as shown in the screenshot.
 <img width="900" alt="image" src="https://github.com/user-attachments/assets/02710b3b-80cf-4c64-8de3-edb82997b6b4">
 
 
-Note: You must specify port 80 for the origin pool (even though it is technically dynamic at the Node/pod level). Remember all traffic being sent between the XC cloud and CE is natively encrypted so this is all tunneled until the last hop to the pod. In our test scenario it will look like this: User-->80-->VIP-->443-->CE-->80--Origin Pool --> (Nodeport).  
+**_**_NOTE:_**:_**: You must specify port 80 for the origin pool (even though it is technically dynamic at the Node/pod level). Remember all traffic being sent between the XC cloud and CE is natively encrypted so this is all tunneled until the last hop to the pod. In our test scenario it will look like this: User-->80-->VIP-->443-->CE-->80--Origin Pool --> (Nodeport).  
 
 Step 4: 
 
@@ -206,14 +206,14 @@ For the WAF policy - Create a new policy called "blocking-policy", put it in blo
 
 <img width="889" alt="image" src="https://github.com/user-attachments/assets/aca0998a-78ce-40e6-b9de-f9981e3189c3">
 
-For everything below the WAF policy, take all the defaults but note all of the other layered security features can be added.
+For everything below the WAF policy, take all the defaults but **_NOTE:_**all of the other layered security features can be added.
 
 Click "Save and Exit" 
 
 Click the "Actions buttons" under load balancer name and go to "Manage Configuration".
 <img width="1088" alt="image" src="https://github.com/user-attachments/assets/341f5cd7-29a7-48b0-80a3-21eb77681ee4">
 
-Click the JSON tab and note your IP address. 
+Click the JSON tab and **_NOTE:_** your IP address. 
 <img width="874" alt="image" src="https://github.com/user-attachments/assets/6c883512-8225-48b0-8cd3-6f4f02c04e8c">
 
 On your local/test machine create a host file entry pointing nginx.example.com to that IP address and test your access to http://nginx.example.com.
