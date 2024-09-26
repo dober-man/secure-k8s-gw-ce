@@ -66,7 +66,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Patch the ServiceAccount with the new secret
-kubectl patch serviceaccount $SERVICE_ACCOUNT_NAME -n $NAMESPACE -p '{"secrets": [{"name": "xc-sa-secret"}]}'
+#kubectl patch serviceaccount $SERVICE_ACCOUNT_NAME -n $NAMESPACE -p '{"secrets": [{"name": "xc-sa-secret"}]}'
 
 if [ $? -ne 0 ]; then
   echo "Error: Failed to patch Service Account"
