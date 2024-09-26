@@ -28,8 +28,11 @@ The F5 XC Load Balancer offers an entire suite of security services providing an
 
 XC Console - (You will need owner/admin access to a tenant)
 If you are not owner/admin, a role with these minimum permissions is required: 
-   * Perm1 (clarifying)
-   * Perm2 (clarifying)
+   * Perm1 - "Admin" for the namespace you are working in (ns = **default** in this lab)
+   * Perm2 - "f5xc-multi-cloud-app-connect-user" (built in role) for the **systems** namespace.
+
+<img width="377" alt="image" src="https://github.com/user-attachments/assets/f0dcad9f-f09e-4b22-8d8e-3b484202f903">
+
 
 # Getting Started
 
