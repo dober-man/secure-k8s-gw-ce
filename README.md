@@ -123,17 +123,23 @@ kvm-voltstack-combo
 
 Give coordinates as appropriate and apply settings. 
 
-### XC Console 
+## XC Console 
 
-Step 1: Login in to XC Cloud Console and accept the CE registration request. 
+### Accept Registration 
 
-#### Multicloud Network Connect -> Manage -> Site Management -> Registrations
+Login in to XC Cloud Console and accept the CE registration request by navigating to: **Multicloud Network Connect -> Manage -> Site Management -> Registrations -> Pending Registrations** and hit refresh a few times until the request appears.
 
-Click Accept on the CE registration request. 
+<img width="1091" alt="image" src="https://github.com/user-attachments/assets/28f35678-aa9b-4dc4-bdc3-898bb6a0f681">
 
-Step 2: Create a Service Discovery.
+Click the "check box" to accept the registration and an "Acceptance Form" will appear. Verify and take all the defaults if no changes are needed, and specifiy the tunnel type towards the bottom. Click **Save and Exit**. 
 
-#### Multicloud App Connect -> Manage -> Service Discovery -> Add Discovery
+
+<img width="746" alt="image" src="https://github.com/user-attachments/assets/647a2c1d-f13e-49b7-aa53-0ba8c822967d">
+
+
+### Create a Service Discovery.
+
+**Multicloud App Connect -> Manage -> Service Discovery -> Add Discovery**
 
 Name: my-sd
 
