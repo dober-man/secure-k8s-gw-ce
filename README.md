@@ -100,8 +100,8 @@ You will soon copy/paste this output into XC Console Service Discovery as a blin
 ## XC Console Prereqs
 You will need owner/admin access to a tenant
 If you are not owner/admin, a role with these minimum permissions is required: 
-   * Perm1 (clarifying)
-   * Perm2 (clarifying)
+   * Perm1 - "Admin" for the namespace you are working in (ns = **default** in this lab)
+   * Perm2 - "f5xc-multi-cloud-app-connect-user" (built in role) for the **system** namespace.
 
 Step 1: Login to XC tenant – create site token: 
 
