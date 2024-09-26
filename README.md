@@ -32,7 +32,7 @@ If you are not owner/admin, a role with these minimum permissions is required:
    * Perm2 - "f5xc-multi-cloud-app-connect-user" (built in role) for the **system** namespace.
    * Perm3 - "f5xc-multi-cloud-network-connect-user" (built in role) for the **system** namespace.
 
-<img width="377" alt="image" src="https://github.com/user-attachments/assets/f0dcad9f-f09e-4b22-8d8e-3b484202f903">
+<img width="377" alt="image" src="https://github.com/user-attachments/assets/63eba5e1-9256-4042-888a-e32af0d60954">
 
 **_NOTE:_**  XC Permissions follow a simple nested structure. You assign “roles” to users or groups. Roles are made up of “API Groups” (these are not user configurable – they already exist in the tenant and are sometimes updated/added). “API Groups” consist of “API Elements” which define CRUD permissions against API endpoints. In order to build a role answer these questions: 
 * “What API endpoints does a user need to do the things they want to do?”
