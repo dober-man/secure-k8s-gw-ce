@@ -72,13 +72,13 @@ The set-token-timeout-util.sh script in the utils folder of this repo can do thi
 
 The script will ask how many days you would like the max token timeout to be. You are not generating a token yet....just configuring the mainfest to allow for lengthier token expiration dates for future tokens. In the next step, when you run the xc-config-k8s.sh script, a token will be generated for you. This token will ultimately be part of the authentication in the kubeconfig file used between the CE and the kube-apiserver for Service Discovery. 
 
-This token should be rotated periodically. If you do choose the 1 hour and it times out, you can run the remove-k8s-xc-config.sh script in the utils folder of this repo from the $HOME directory and re-run the xc-k8s-setup.sh as shown below: 
+This token should be rotated periodically. If you do choose the 1 hour and it times out, you can run the remove-k8s-xc-config.sh script in the utils folder of this repo from the $HOME directory and re-run the xc-config-k8s.sh as shown below: 
 
 ## Setup K8s for Service Discovery from XC-CE
-1. Copy xc-k8s-setup.sh script into $HOME directory.
+1. Copy xc-config-k8s.sh script into $HOME directory.
 2. Modify the section under "###Set Token Duration###" per your configuration. You can choose 1hr (default) or user defined. 
-3. Give script exe permissions (chmod +x xc-k8s-setup.sh)
-4. Run ./xc-k8s-setup.sh
+3. Give script exe permissions (chmod +x xc-config-k8s.sh)
+4. Run ./xc-config-k8s.sh
 
 ### Script Overview
 The xc-config-k8s.sh script performs the following tasks:
