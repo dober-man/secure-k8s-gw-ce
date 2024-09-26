@@ -1,5 +1,4 @@
 #!/bin/bash
-#8/14 this script is not functional yet as the service account does not seem to have the necessary perms. ticket opened to clarify. 
 
 # Variables
 ROLE_NAME=service-discovery-role
@@ -26,30 +25,28 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-###Set Token Duration###
-# Generate User Defined Token 
+# DEFAULT - Generate 1 Hour Token 
+# This token is good for the default of 1 hour. You can adjust this by running the 
+# token-timeout-utility.sh and defining your timeout parameters in days.
+TOKEN=$(kubectl create token $SERVICE_ACCOUNT_NAME -n $NAMESPACE)
+echo '1hr Token Created'
 
-echo "You are about so set the SA token timemout value. You should have already run the set-token-timeout-util to adjust the kube-apiserver manifest file which had a default value timeout of 1 hour"
-echo "#####################################################"
-read -p "How many hours would you like the service account token to be valid for (up to 720 hours - 30 days) [Default= 24]: " DURATION
-DURATION=${DURATION:-24}
+###CUSTOM - Set Token Duration###
+##Generate User Defined Token 
+##UNCOMMENT BELOW AND COMMENT OUT THE "Generate 1 Hour Token" SECTION (lines 32,32). 
+#echo "You are about so set the SA token timemout value. You should have already run the set-token-timeout-util to adjust the kube-apiserver manifest file which had a default value timeout of 1 hour"
+#echo "#####################################################"
+#read -p "How many hours would you like the service account token to be valid for (up to 720 hours - 30 days) [Default= 24]: " DURATION
+#DURATION=${DURATION:-24}
 
-# Generate 1 Hour Token (default)
-# Note this token is good for the default of 1 hour. You can adjust this by running the 
-# token-timeout-utility.sh and defining your timeout parameters in days. 
-#TOKEN=$(kubectl create token $SERVICE_ACCOUNT_NAME -n $NAMESPACE)
-#echo 'Token Created'
-
-# Generate token with duration. Uncomment below two lines after running the set-token-timeout-util. Set duration in hours.
-
-TOKEN=$(kubectl create token $SERVICE_ACCOUNT_NAME -n $NAMESPACE --duration=$DURATION\h)
+##Generate token with duration. Uncomment below two lines after running the set-token-timeout-util. Set duration in hours.
+#TOKEN=$(kubectl create token $SERVICE_ACCOUNT_NAME -n $NAMESPACE --duration=$DURATION\h)
+#echo "$DURATION hr Token Created"
 
 if [ $? -ne 0 ]; then
   echo "Error: Failed to create token"
   exit 1
 fi
-
-echo 'Token Created'
 
 # Warning Message
 echo "###############################################"
@@ -121,7 +118,7 @@ fi
 APISERVER=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
 
 # Add ClusterRoleBinding for Cluster Admin privileges (for testing need to remove after support verifies)
-kubectl create clusterrolebinding debug-binding --clusterrole=cluster-admin --serviceaccount=${NAMESPACE}:${SERVICE_ACCOUNT_NAME}
+# kubectl create clusterrolebinding debug-binding --clusterrole=cluster-admin --serviceaccount=${NAMESPACE}:${SERVICE_ACCOUNT_NAME}
 
 # Generate the kubeconfig File
 echo "---
@@ -174,5 +171,5 @@ yq eval -P $KUBECONFIG_FILE -o yaml > cleaned_kubeconfig.yaml
 mv cleaned_kubeconfig.yaml $KUBECONFIG_FILE
 
 echo "kubeconfig file generated at: $KUBECONFIG_FILE"
-echo "The token in this kubeconfig file is good for $DURATION hours. View the Readme.md for more info."
+echo "The token in this kubeconfig file is good for ${DURATION:-1} hours. View the Readme.md for more info."
 echo "You can test the token by running the following command: kubectl --kubeconfig=/home/ubuntu/kubeconfig get namespaces -n kube-system"
