@@ -28,11 +28,12 @@ The F5 XC Load Balancer offers an entire suite of security services providing an
 
 XC Console - (You will need owner/admin access to a tenant)
 If you are not owner/admin, a role with these minimum permissions is required: 
-   * Perm1 - "Admin" for the namespace you are working in (ns = **default** in this lab)
+   * Perm1 - "Admin" for the namespace you are working in (ns = **default** in this lab) 
    * Perm2 - "f5xc-multi-cloud-app-connect-user" (built in role) for the **system** namespace.
    * Perm3 - "f5xc-multi-cloud-network-connect-user" (built in role) for the **system** namespace.
+   * Perm4 - "f5xc-multi-cloud-app-connect-user" (built in role) for the **shared** namespace.
 
-<img width="377" alt="image" src="https://github.com/user-attachments/assets/63eba5e1-9256-4042-888a-e32af0d60954">
+<img width="375" alt="image" src="https://github.com/user-attachments/assets/6c2cd7c9-1220-4d2c-87ed-3bfbaf9d385b">
 
 **_NOTE:_**  XC Permissions follow a simple nested structure. You assign “roles” to users or groups. Roles are made up of “API Groups” (these are not user configurable – they already exist in the tenant and are sometimes updated/added). “API Groups” consist of “API Elements” which define CRUD permissions against API endpoints. In order to build a role answer these questions: 
 * “What API endpoints does a user need to do the things they want to do?”
@@ -98,18 +99,12 @@ The xc-config-k8s.sh script performs the following tasks:
 **_NOTE:_** This is highly sensitive data and should be secured as such. 
 You will soon copy/paste this output into XC Console Service Discovery as a blindfolded secret. More info about blindfold here: https://docs.cloud.f5.com/docs/ves-concepts/security#secrets-management-and-blindfold
 
-## XC Console Prereqs
-You will need owner/admin access to a tenant
-If you are not owner/admin, a role with these minimum permissions is required: 
-   * Perm1 - "Admin" for the namespace you are working in (ns = **default** in this lab)
-   * Perm2 - "f5xc-multi-cloud-app-connect-user" (built in role) for the **system** namespace.
-   * Perm3 - "f5xc-multi-cloud-network-connect-user" (built in role) for the **system** namespace.
+## XC Console 
 
-Step 1: Login to XC tenant – create site token: 
+Login to XC tenant, navigate to: **Multicloud Network Connect -> Manage -> Site Management -> Site Tokens** and click create. Give it a name click save. 
 
-#### Multicloud Network Connect -> Manage -> Site Management -> Site Tokens -> Create
-
-Step 2: On your VE CE, use the local Console (cli) or Site UI to configure and register with the XC cloud platform. 
+## VE CE
+On your VE CE, use the local Console (cli) or Site UI to configure and register with the XC cloud platform. 
 
 Default Login: 
 
@@ -188,13 +183,9 @@ Click "Services" to see the full service name. You will need this for your origi
 
 <img width="983" alt="image" src="https://github.com/user-attachments/assets/90273572-c944-43a1-83cf-0054a9b26771">
 
-Step 3: 
+## Create Origin Objects with discovered Services
 
-## Create Origin Objects
-
-Create Origin Servers and Pool with Discovered Service: 
-
-#### Multicloud App Connect -> Manage -> Load Balancers -> Origin Pools -> Add Origin Pool 
+Navigate to: **Multicloud App Connect -> Manage -> Load Balancers -> Origin Pools** -> Add Origin Pool 
 
 Define the Origin Servers (click Add Item) and use the screenshot to fill in the config. 
 <img width="1206" alt="image" src="https://github.com/user-attachments/assets/8010b034-f8b9-44c3-b6f8-8de6353b6c8b">
@@ -204,9 +195,7 @@ Define the Pool Definitions as shown in the screenshot.
 <img width="900" alt="image" src="https://github.com/user-attachments/assets/02710b3b-80cf-4c64-8de3-edb82997b6b4">
 
 
-**_**_NOTE:_**:_**: You must specify port 80 for the origin pool (even though it is technically dynamic at the Node/pod level). Remember all traffic being sent between the XC cloud and CE is natively encrypted so this is all tunneled until the last hop to the pod. In our test scenario it will look like this: User-->80-->VIP-->443-->CE-->80--Origin Pool --> (Nodeport).  
-
-Step 4: 
+**_NOTE:_**: You must specify port 80 for the origin pool (even though it is technically dynamic at the Node/pod level). Remember all traffic being sent between the XC cloud and CE is natively encrypted so this is all tunneled until the last hop to the pod. In our test scenario it will look like this: User-->80-->VIP-->443-->CE-->80--Origin Pool --> (Nodeport).  
 
 ## Publish the Service
 
