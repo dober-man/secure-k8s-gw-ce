@@ -141,15 +141,15 @@ Click the "check box" to accept the registration and an "Acceptance Form" will a
 
 **Multicloud App Connect -> Manage -> Service Discovery -> Add Discovery**
 
-Name: my-sd
+Name: **my-sd**
 
-Virtual-Site or Site or Network: Site
+Virtual-Site or Site or Network: **Site**
 
-Reference: - [choose your CE site]
+Reference: - **[choose your CE site]**
 
-Network Type: Site Local Network
+Network Type: **Site Local Network**
 
-Discovery Method: K8s Discovery Configuration
+Discovery Method: **K8s Discovery Configuration**
  
 <img width="1164" alt="image" src="https://github.com/user-attachments/assets/ad8ddbe6-8360-4228-97ed-ee0511074dc3">
 
@@ -157,15 +157,15 @@ Click on "Configure" under K8S Discovery Configuration
 
 #### Access credentials: 
 
-Select Kubernetes Credentials: Kubeconfig
+Select Kubernetes Credentials: **Kubeconfig**
 
-Click "Configure" under Kubeconfig
+Click **"Configure"** under Kubeconfig
 
-Secret Type: Blindfolded
+Secret Type: **Blindfolded**
 
-Action: Blindfold New Secret
+Action: **Blindfold New Secret**
 
-Policy Type: Built-in
+Policy Type: **Built-in**
 
 Secret to Blindfold: [this is the content of the $HOME/kubeconfig file that was generated on the host that you ran the xc-config-k8s.sh script.] Copy the contents of the $HOME/kubeconfig file to your clipboard and make sure to not grab any trailing whitespaces or extras. 
 <br>
