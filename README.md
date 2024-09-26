@@ -119,7 +119,7 @@ Configure now...
 
 enter Site Token from previous step
 
-voltstack-combo
+kvm-voltstack-combo
 
 Give coordinates as appropriate and apply settings. 
 
