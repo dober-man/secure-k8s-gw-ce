@@ -28,8 +28,18 @@ The F5 XC Load Balancer offers an entire suite of security services providing an
 
 XC Console - (You will need owner/admin access to a tenant)
 If you are not owner/admin, a role with these minimum permissions is required: 
-   * Perm1 (clarifying)
-   * Perm2 (clarifying)
+   * Perm1 - "Admin" for the namespace you are working in (ns = **default** in this lab) 
+   * Perm2 - "f5xc-multi-cloud-app-connect-user" (built in role) for the **system** namespace.
+   * Perm3 - "f5xc-multi-cloud-network-connect-user" (built in role) for the **system** namespace.
+   * Perm4 - "f5xc-multi-cloud-app-connect-user" (built in role) for the **shared** namespace.
+
+<img width="375" alt="image" src="https://github.com/user-attachments/assets/6c2cd7c9-1220-4d2c-87ed-3bfbaf9d385b">
+
+**_NOTE:_**  XC Permissions follow a simple nested structure. You assign “roles” to users or groups. Roles are made up of “API Groups” (these are not user configurable – they already exist in the tenant and are sometimes updated/added). “API Groups” consist of “API Elements” which define CRUD permissions against API endpoints. In order to build a role answer these questions: 
+* “What API endpoints does a user need to do the things they want to do?”
+* “What API elements will allow these actions?”
+* “Which API groups contain these elements?”
+
 
 # Getting Started
 
@@ -64,13 +74,13 @@ The set-token-timeout-util.sh script in the utils folder of this repo can do thi
 
 The script will ask how many days you would like the max token timeout to be. You are not generating a token yet....just configuring the mainfest to allow for lengthier token expiration dates for future tokens. In the next step, when you run the xc-config-k8s.sh script, a token will be generated for you. This token will ultimately be part of the authentication in the kubeconfig file used between the CE and the kube-apiserver for Service Discovery. 
 
-This token should be rotated periodically. If you do choose the 1 hour and it times out, you can run the remove-k8s-xc-config.sh script in the utils folder of this repo from the $HOME directory and re-run the xc-k8s-setup.sh as shown below: 
+This token should be rotated periodically. If you do choose the 1 hour and it times out, you can run the remove-k8s-xc-config.sh script in the utils folder of this repo from the $HOME directory and re-run the xc-config-k8s.sh as shown below: 
 
 ## Setup K8s for Service Discovery from XC-CE
-1. Copy xc-k8s-setup.sh script into $HOME directory.
+1. Copy xc-config-k8s.sh script into $HOME directory.
 2. Modify the section under "###Set Token Duration###" per your configuration. You can choose 1hr (default) or user defined. 
-3. Give script exe permissions (chmod +x xc-k8s-setup.sh)
-4. Run ./xc-k8s-setup.sh
+3. Give script exe permissions (chmod +x xc-config-k8s.sh)
+4. Run ./xc-config-k8s.sh
 
 ### Script Overview
 The xc-config-k8s.sh script performs the following tasks:
@@ -89,17 +99,12 @@ The xc-config-k8s.sh script performs the following tasks:
 **_NOTE:_** This is highly sensitive data and should be secured as such. 
 You will soon copy/paste this output into XC Console Service Discovery as a blindfolded secret. More info about blindfold here: https://docs.cloud.f5.com/docs/ves-concepts/security#secrets-management-and-blindfold
 
-## XC Console Prereqs
-You will need owner/admin access to a tenant
-If you are not owner/admin, a role with these minimum permissions is required: 
-   * Perm1 (clarifying)
-   * Perm2 (clarifying)
+## XC Console 
 
-Step 1: Login to XC tenant – create site token: 
+Login to XC tenant, navigate to: **Multicloud Network Connect -> Manage -> Site Management -> Site Tokens** and click create. Give it a name click save. 
 
-#### Multicloud Network Connect -> Manage -> Site Management -> Site Tokens -> Create
-
-Step 2: On your VE CE, use the local Console (cli) or Site UI to configure and register with the XC cloud platform. 
+## VE CE
+On your VE CE, use the local Console (cli) or Site UI to configure and register with the XC cloud platform. 
 
 Default Login: 
 
@@ -109,31 +114,37 @@ Configure now...
 
 enter Site Token from previous step
 
-voltstack-combo
+kvm-voltstack-combo
 
 Give coordinates as appropriate and apply settings. 
 
-### XC Console 
+## XC Console 
 
-Step 1: Login in to XC Cloud Console and accept the CE registration request. 
+### Accept Registration 
 
-#### Multicloud Network Connect -> Manage -> Site Management -> Registrations
+Login in to XC Cloud Console and accept the CE registration request by navigating to: **Multicloud Network Connect -> Manage -> Site Management -> Registrations -> Pending Registrations** and hit refresh a few times until the request appears.
 
-Click Accept on the CE registration request. 
+<img width="1091" alt="image" src="https://github.com/user-attachments/assets/28f35678-aa9b-4dc4-bdc3-898bb6a0f681">
 
-Step 2: Create a Service Discovery.
+Click the "check box" to accept the registration and an "Acceptance Form" will appear. Verify and take all the defaults if no changes are needed, and specifiy the tunnel type towards the bottom. Click **Save and Exit**. 
 
-#### Multicloud App Connect -> Manage -> Service Discovery -> Add Discovery
 
-Name: my-sd
+<img width="746" alt="image" src="https://github.com/user-attachments/assets/647a2c1d-f13e-49b7-aa53-0ba8c822967d">
 
-Virtual-Site or Site or Network: Site
 
-Reference: - [choose your CE site]
+### Create a Service Discovery.
 
-Network Type: Site Local Network
+**Multicloud App Connect -> Manage -> Service Discovery -> Add Discovery**
 
-Discovery Method: K8s Discovery Configuration
+Name: **my-sd**
+
+Virtual-Site or Site or Network: **Site**
+
+Reference: - **[choose your CE site]**
+
+Network Type: **Site Local Network**
+
+Discovery Method: **K8s Discovery Configuration**
  
 <img width="1164" alt="image" src="https://github.com/user-attachments/assets/ad8ddbe6-8360-4228-97ed-ee0511074dc3">
 
@@ -141,15 +152,15 @@ Click on "Configure" under K8S Discovery Configuration
 
 #### Access credentials: 
 
-Select Kubernetes Credentials: Kubeconfig
+Select Kubernetes Credentials: **Kubeconfig**
 
-Click "Configure" under Kubeconfig
+Click **"Configure"** under Kubeconfig
 
-Secret Type: Blindfolded
+Secret Type: **Blindfolded**
 
-Action: Blindfold New Secret
+Action: **Blindfold New Secret**
 
-Policy Type: Built-in
+Policy Type: **Built-in**
 
 Secret to Blindfold: [this is the content of the $HOME/kubeconfig file that was generated on the host that you ran the xc-config-k8s.sh script.] Copy the contents of the $HOME/kubeconfig file to your clipboard and make sure to not grab any trailing whitespaces or extras. 
 <br>
@@ -172,13 +183,9 @@ Click "Services" to see the full service name. You will need this for your origi
 
 <img width="983" alt="image" src="https://github.com/user-attachments/assets/90273572-c944-43a1-83cf-0054a9b26771">
 
-Step 3: 
+## Create Origin Objects with discovered Services
 
-## Create Origin Objects
-
-Create Origin Servers and Pool with Discovered Service: 
-
-#### Multicloud App Connect -> Manage -> Load Balancers -> Origin Pools -> Add Origin Pool 
+Navigate to: **Multicloud App Connect -> Manage -> Load Balancers -> Origin Pools** -> Add Origin Pool 
 
 Define the Origin Servers (click Add Item) and use the screenshot to fill in the config. 
 <img width="1206" alt="image" src="https://github.com/user-attachments/assets/8010b034-f8b9-44c3-b6f8-8de6353b6c8b">
@@ -188,9 +195,7 @@ Define the Pool Definitions as shown in the screenshot.
 <img width="900" alt="image" src="https://github.com/user-attachments/assets/02710b3b-80cf-4c64-8de3-edb82997b6b4">
 
 
-**_**_NOTE:_**:_**: You must specify port 80 for the origin pool (even though it is technically dynamic at the Node/pod level). Remember all traffic being sent between the XC cloud and CE is natively encrypted so this is all tunneled until the last hop to the pod. In our test scenario it will look like this: User-->80-->VIP-->443-->CE-->80--Origin Pool --> (Nodeport).  
-
-Step 4: 
+**_NOTE:_**: You must specify port 80 for the origin pool (even though it is technically dynamic at the Node/pod level). Remember all traffic being sent between the XC cloud and CE is natively encrypted so this is all tunneled until the last hop to the pod. In our test scenario it will look like this: User-->80-->VIP-->443-->CE-->80--Origin Pool --> (Nodeport).  
 
 ## Publish the Service
 
