@@ -163,7 +163,7 @@ if ! command -v yq &>/dev/null; then
     echo "Error: Failed to set executable permission on yq"
     exit 1
   fi
-fi  # <--- This 'fi' was missing to close the yq installation block
+fi  
 
 # Clean up the YAML with yq
 yq eval -P $KUBECONFIG_FILE -o yaml > cleaned_kubeconfig.yaml
