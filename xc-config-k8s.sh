@@ -34,7 +34,7 @@ echo '1hr Token Created'
 ###CUSTOM - Set Token Duration###
 ##Generate User Defined Token 
 ##UNCOMMENT BELOW AND COMMENT OUT THE "Generate 1 Hour Token" SECTION (lines 32,32). 
-#echo "You are about so set the SA token timemout value. You should have already run the set-token-timeout-util to adjust the kube-apiserver manifest file which had a default value timeout of 1 hour"
+#echo "You are about so set the SA token timeout value. You should have already run the set-token-timeout-util to adjust the kube-apiserver manifest file which had a default value timeout of 1 hour"
 #echo "#####################################################"
 #read -p "How many hours would you like the service account token to be valid for (up to 720 hours - 30 days) [Default= 24]: " DURATION
 #DURATION=${DURATION:-24}
